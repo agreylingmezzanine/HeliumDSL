@@ -202,9 +202,9 @@ The `alertWarn`**** and `alertError` BIFs display orange and red text, respectiv
   
 
 
-## Lesson Source Code
 
-[Lesson 4.zip](/wiki/download/attachments/5737545/Lesson%204.zip?version=2&modificationDate=1498044712991&cacheVersion=1&api=v2)
+
+
 
   
 

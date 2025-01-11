@@ -136,6 +136,6 @@ The results will go into a table, so we create a new object for its collection s
 
 The steps above will be repeated for each shop, so naturally we add an item to the collection for each shop.
 
-## Lesson Source Code
 
-[Lesson 16.zip](/wiki/download/attachments/5741933/Lesson%2016.zip?version=4&modificationDate=1500292785449&cacheVersion=1&api=v2)
+
+

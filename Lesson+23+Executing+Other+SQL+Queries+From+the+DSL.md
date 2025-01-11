@@ -122,9 +122,9 @@ It's important to note that SQL making use of [temporary tables](https://www.pos
 
 Avoid SQL using temporary tables in DSL apps.
 
-## Lesson Source Code
 
-[Lesson 23.zip](/wiki/download/attachments/5740815/Lesson%2023.zip?version=2&modificationDate=1507631644712&cacheVersion=1&api=v2)
+
+
 
   
 

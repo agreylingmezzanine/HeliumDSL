@@ -504,9 +504,9 @@ A line by line description of the `generateShopCode` function follows:
   
 
 
-## Lesson Source Code
 
-[Lesson 5.zip](/wiki/download/attachments/5739185/Lesson%205.zip?version=3&modificationDate=1498044736825&cacheVersion=1&api=v2)
+
+
 
   
 

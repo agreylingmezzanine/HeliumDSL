@@ -514,6 +514,6 @@ External resources:
 
 
 
-## Lesson Source Code
 
-[Lesson 28.zip](/wiki/download/attachments/5740744/Lesson%2028.zip?version=1&modificationDate=1539169568381&cacheVersion=1&api=v2)
+
+

@@ -654,9 +654,9 @@ To reiterate, the above does not represent the payment status itself, but the st
   
 
 
-## Lesson Source Code
 
-[Lesson 12.zip](/wiki/download/attachments/5740726/Lesson%2012.zip?version=4&modificationDate=1500292643543&cacheVersion=1&api=v2)
+
+[Lesson 12.zip](v/5740726/Lesson%2012.zip?version=4&modificationDate=1500292643543&cacheVersion=1&api=v2)
 
   
 

@@ -127,6 +127,6 @@ The screenshot below demonstrates the completed view with certificate that has b
 
 Note that the info widget, file browser and button at the bottom of the view is hidden until a file has been uploaded with a valid id.
 
-## Lesson Source Code
 
-[Lesson 11.zip](/wiki/download/attachments/5737864/Lesson%2011.zip?version=4&modificationDate=1500292608079&cacheVersion=1&api=v2)
+
+

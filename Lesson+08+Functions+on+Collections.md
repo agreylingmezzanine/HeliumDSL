@@ -440,9 +440,9 @@ When looping over a collection to remove multiple items special caution needs be
   
 
 
-## Lesson Source Code
 
-[Lesson 8.zip](/wiki/download/attachments/5738249/Lesson%208.zip?version=3&modificationDate=1498044806056&cacheVersion=1&api=v2)
+
+
 
   
 

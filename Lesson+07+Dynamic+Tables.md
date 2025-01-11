@@ -319,9 +319,9 @@ Note that dynamic labels such as this can be applied to table titles, column hea
   
 
 
-## Lesson Source Code
 
-[Lesson 7.zip](/wiki/download/attachments/5743716/Lesson%207.zip?version=3&modificationDate=1498044784124&cacheVersion=1&api=v2)
+
+
 
   
 

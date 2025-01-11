@@ -140,9 +140,9 @@ Next we'll sort according to the date on the object:
 
 These should be familiar patterns by now. The important thing to see is that you order and filter for the gallery widget using DSL logic before sending the collection to the widget. There is currently no filtering or sorting features built into the gallery widget itself.
 
-## Lesson Source Code
 
-[Lesson 26.zip](/wiki/download/attachments/5736808/Lesson%2026.zip?version=3&modificationDate=1524048708312&cacheVersion=1&api=v2)
+
+
 
 ## Other Resources
 

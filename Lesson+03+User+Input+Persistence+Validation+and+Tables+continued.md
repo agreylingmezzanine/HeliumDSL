@@ -390,9 +390,9 @@ The `<table>` widget allows a time interval between 30 and 1800 seconds to be sp
   
 
 
-## Lesson Source Code
 
-[Lesson 3.zip](/wiki/download/attachments/5741853/Lesson%203.zip?version=1&modificationDate=1488146776535&cacheVersion=1&api=v2)
+
+
 
   
 

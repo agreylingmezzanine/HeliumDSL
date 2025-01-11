@@ -59,6 +59,6 @@ The above (together with the required flag attribute on the `SystemAdmin` object
 
 ![](https://mezzaninewiki.atlassian.net/wiki/download/attachments/5739173/Screen%20Shot%202017-02-07%20at%202.34.40%20PM.png?version=1&modificationDate=1486478971040&cacheVersion=1&api=v2)
 
-## Lesson Source Code
 
-[Lesson 20.zip](/wiki/download/attachments/5739173/lesson%2020.zip?version=6&modificationDate=1500293980303&cacheVersion=1&api=v2)
+
+

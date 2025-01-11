@@ -567,9 +567,9 @@ For more related documentation see the following:
   
 
 
-## Lesson Source Code
 
-[Lesson 27.zip](/wiki/download/attachments/5737328/Lesson%2027.zip?version=1&modificationDate=1536930209247&cacheVersion=1&api=v2)
+
+
 
   
 

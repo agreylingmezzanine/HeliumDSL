@@ -99,6 +99,6 @@ As `"Shop Owner"`:
 
 The older map attributes `"latitudeAttribute"` and `"longituteAttribute"` (sic) instead of `"lat"` and `"long"` is also valid.
 
-## Lesson Source Code
 
-[Lesson 15.zip](/wiki/download/attachments/5744335/Lesson%2015.zip?version=4&modificationDate=1500292749007&cacheVersion=1&api=v2)
+
+

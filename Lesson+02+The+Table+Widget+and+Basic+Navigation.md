@@ -341,9 +341,9 @@ The above referenced `destroy` function will be called when navigating away from
   
 
 
-## Lesson Source Code
 
-[Lesson 2.zip](/wiki/download/attachments/5736773/Lesson%202.zip?version=1&modificationDate=1488146715048&cacheVersion=1&api=v2)
+
+
 
   
 

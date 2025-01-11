@@ -96,6 +96,6 @@ As mentioned earlier, the `Identity` object is read-only. It _cannot_ be directl
        }
     }
 
-## Lesson Source Code
 
-[Lesson 21.zip](/wiki/download/attachments/5742504/lesson%2021.zip?version=5&modificationDate=1500294047712&cacheVersion=1&api=v2)
+
+

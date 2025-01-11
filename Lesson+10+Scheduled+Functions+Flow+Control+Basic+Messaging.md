@@ -293,6 +293,6 @@ Whenever possible, a single complex selector should always be preferred above mu
 
 If possible, use complex selectors instead of multiple simple selectors to populate collections.
 
-## Lesson Source Code
 
-[Lesson 10.zip](/wiki/download/attachments/5735034/Lesson%2010.zip?version=5&modificationDate=1500292578687&cacheVersion=1&api=v2)
+
+

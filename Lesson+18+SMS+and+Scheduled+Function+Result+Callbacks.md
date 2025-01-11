@@ -221,9 +221,9 @@ Keep in mind that only one callback function for SMS results updates is allowed.
 
 Helium performs multiple attempts to try and send SMS messages. If an SMS result update has a value for the `success` attribute of **`false`** , it is possible that the message will eventually be sent. It is therefore important to also check the `doneProcessing` attribute. If this is set to true, no more attempts to send the message will be made.
 
-## Lesson Source Code
 
-[Lesson 18.zip](/wiki/download/attachments/5737209/Lesson%2018.zip?version=5&modificationDate=1500293851616&cacheVersion=1&api=v2)
+
+
 
   
 

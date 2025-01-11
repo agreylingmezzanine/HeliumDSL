@@ -250,9 +250,9 @@ It's important to note that SQL making use of [temporary tables](https://www.pos
   
 
 
-## Lesson Source Code
 
-[Lesson 24.zip](/wiki/download/attachments/5738843/Lesson%2024.zip?version=1&modificationDate=1507733638368&cacheVersion=1&api=v2)
+
+
 
   
 

@@ -189,9 +189,9 @@ To see your `<wall>` widget populated using this lesson's instructions, you will
   
 
 
-## Lesson Source Code
 
-[Lesson 14.zip](/wiki/download/attachments/5742014/Lesson%2014.zip?version=4&modificationDate=1500292712574&cacheVersion=1&api=v2)
+
+
 
   
 

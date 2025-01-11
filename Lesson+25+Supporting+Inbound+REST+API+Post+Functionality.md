@@ -483,6 +483,6 @@ The following parameter types are supported for inbound REST API functions in th
 
 
 
-## Lesson Source Code
 
-[Lesson 25.zip](/wiki/download/attachments/5744631/Lesson%2025.zip?version=1&modificationDate=1522939454756&cacheVersion=1&api=v2)
+
+
