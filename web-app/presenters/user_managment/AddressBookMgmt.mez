@@ -1,0 +1,166 @@
+unit AddressBookMgmt;
+
+string searchParam;
+AddressBookListing[] foundResults;
+bool showResults;
+
+string name;
+int age;
+string address;
+string mobileNumber;
+
+AddressBookListing selectedListing;
+
+void init(){
+    showResults=false;
+}
+
+void searchAddressBook(){
+  if (searchParam != null && searchParam != "") {
+    foundResults = null;
+    foundResults = getAddressBookListings();
+  } else{
+    Mez:alertError("alert_error.no_input_given");
+  }
+}
+
+AddressBookListing[] getAddressBookListings() {
+
+    string baseUrl = "http://127.0.0.1:8090/3ec84978-b8aa-4d03-864e-3c50afebb93a";
+    string listingEndpoint = "/1/listing/";
+    string url = Strings:concat(baseUrl, listingEndpoint);
+    string userName = "user1";
+    string encodedParam = String:urlEncode(searchParam);
+
+    AddressBookListing[] result;
+
+    try {
+        MezApiRequest request = MezApiRequest:new();
+        request.url = url;
+        request.credentials = userName;
+        request.queryParameters = "{}";
+        request.queryParameters.jsonPut("name", encodedParam);
+
+        MezApiResponse response = api:get(request);
+        int responseCode = response.code;
+        string responseMessage = response.message;
+        string requestUrl = response.url;
+
+        if(responseCode < 200 || responseCode >= 300) {
+            Mez:alertError("alert_error.listing_get_failure");
+            return result;
+        }
+
+        result = createAddressBookListingsFromJson(response.body);
+        showResults = true;
+        return result;
+    } catch(ex) {
+        string exceptionMessage = ex.message;
+        Mez:alertError("alert_error.listing_get_exception");
+        return result;
+    }
+}
+
+AddressBookListing createAddressBookListingFromJson(json listingJson) {
+    AddressBookListing listing = AddressBookListing:new();
+    listing.id = listingJson.jsonGet("id");
+    listing.name = listingJson.jsonGet("name");
+    listing.address = listingJson.jsonGet("address");
+    listing.age = listingJson.jsonGet("age");
+    listing.mobileNumber = listingJson.jsonGet("mobileNumber");
+    return listing;
+}
+
+AddressBookListing[] createAddressBookListingsFromJson(json listingsJson) {
+    jsonarray listingsJsonArray = listingsJson;
+    json[] listingsJsonCollection = listingsJsonArray;
+
+    AddressBookListing[] result;
+    foreach(json jsonListing: listingsJsonCollection) {
+        AddressBookListing newListing = createAddressBookListingFromJson(jsonListing);
+        result.append(newListing);
+    }
+
+    return result;
+}
+
+void updateListing(){
+  if (selectedListing != null) {
+    string[] nameArray = String:split(selectedListing.name, " ");
+    name = selectedListing.name;
+    age = selectedListing.age;
+    address = selectedListing.address;
+    mobileNumber = selectedListing.mobileNumber;
+  }
+}
+
+void submitListing(){
+  string baseUrl = "http://127.0.0.1:8090/3ec84978-b8aa-4d03-864e-3c50afebb93a";
+  string listingEndpoint = "/1/listing";
+  string url = Strings:concat(baseUrl, listingEndpoint);
+  string userName = "user2";
+  json body = "{}";
+  uuid id;
+
+  if (selectedListing == null) {
+    AddressBookListing obj = AddressBookListing:new();
+    id = obj._id;
+  } else {
+    id = selectedListing.id;
+  }
+
+  body.jsonPut("id", id);
+  body.jsonPut("name", name);
+  body.jsonPut("address", address);
+  body.jsonPut("age", age);
+  body.jsonPut("mobileNumber", mobileNumber);
+
+  try {
+      MezApiRequest request = MezApiRequest:new();
+      request.url = url;
+      request.credentials = userName;
+      request.body = body;
+
+      MezApiResponse response = api:post(request);
+      int responseCode = response.code;
+      string responseMessage = response.message;
+
+      if(responseCode < 200 || responseCode >= 300) {
+          Mez:alertError("alert_error.listing_get_failure");
+      } else {
+        searchAddressBook();
+        Mez:alert("alert.uploaded_data_saved");
+      }
+  } catch(ex) {
+      string exceptionMessage = ex.message;
+      Mez:alertError("alert_error.listing_get_exception");
+  }
+}
+
+void deleteListing(){
+  if (selectedListing != null) {
+    string baseUrl = "http://127.0.0.1:8090/3ec84978-b8aa-4d03-864e-3c50afebb93a";
+    string listingEndpoint = "/1/listing/";
+    string url = Strings:concat(baseUrl, listingEndpoint, selectedListing.id);
+    string userName = "user2";
+    try {
+        MezApiRequest request = MezApiRequest:new();
+        request.url = url;
+        request.credentials = userName;
+
+        MezApiResponse response = api:delete(request);
+        int responseCode = response.code;
+        string responseMessage = response.message;
+
+        if(responseCode < 200 || responseCode >= 300) {
+            Mez:alertError("alert_error.listing_get_failure");
+        } else {
+          searchAddressBook();
+          selectedListing = null;
+        }
+    } catch(ex) {
+        string exceptionMessage = ex.message;
+        Mez:alertError("alert_error.listing_get_exception");
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.purchase_frequency" unit="PurchasesReports" init="init">
+
+                <action label="action.purchase_dashboard" action="navigateToPurchaseDashboard" />
+            
+		<select label="select.shop">
+			<binding variable="selectedShop" />
+			<collectionSource variable="availableShops">
+				<displayAttribute name="name" />
+			</collectionSource>
+		</select>
+
+		<datefield label="datefield.start_date">
+			<binding variable="startDate"/>
+		</datefield>
+		
+		<datefield label="datefield.end_date">
+			<binding variable="endDate"/>
+		</datefield>
+
+		<submit label="submit.submit" action="submitFilter"/>
+		
+		<table>
+			<collectionSource function="getPurchaseFrequency"/>
+			<column heading="column_heading.week_start">
+				<attributeName>weekStart</attributeName>
+			</column>
+			<column heading="column_heading.week_end">
+				<attributeName>weekEnd</attributeName>
+			</column>
+			<column heading="column_heading.purchases">
+				<attributeName>count</attributeName>
+			</column>
+		</table>
+	</view>
+</ui>

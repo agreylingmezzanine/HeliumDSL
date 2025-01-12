@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.farmer_location_map" unit="FarmerMap">
+
+		<menuitem label="menu_item.farmer_map" icon="Globe" order="5">
+			<userRole>System Admin</userRole>
+			<userRole>Shop Owner</userRole>
+		</menuitem>
+
+		<map latitudeAttribute="latitude" longituteAttribute="longitude">
+			<collectionSource function="getFarmers"/>
+			<markerTitle value="getMarkerTitle"/>
+			<markerIcon value="getMarkerIcon"/>
+			<markerDesc value="getMarkerDescription"/>
+		</map>
+	</view>
+</ui>
+
+

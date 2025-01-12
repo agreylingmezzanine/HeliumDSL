@@ -1,0 +1,133 @@
+unit ApiSupportResource;
+
+@POST("v1/support/ticket")
+void postSupportTicket(SupportTicket supportTicket) {
+    supportTicket.receivedTime = Mez:now();
+    supportTicket.spam = false;
+    supportTicket.resolved = false;
+    supportTicket.deleted = false;
+    supportTicket.save();
+}
+
+// Example curl call for posting a support ticket
+/*
+curl -u 'user:pass' \
+-H "Content-Type: application/json" \
+-X POST "https://dev.mezzanineware.com/rest/mezzanine-tut-lesson-27/v1/support/ticket" \
+-d '{  
+  "_id":"0e83d825-963e-4c9c-8340-75269d7c3f57",
+  "text":"I require assistance in performing a stock update",
+  "senderNumber":"27761231234"
+}'
+*/
+
+@GET("v1/support/ticket/ticketId/{ticketId}")
+SupportTicket getSupportTicket(uuid ticketId) {
+    SupportTicket ticket = SupportTicket:read(ticketId);
+    return ticket;
+}
+
+// Example curl call for getting a support ticket based on its id
+/*
+curl -u 'user:pass' \
+-H "Content-Type: application/json" \
+-X GET "https://dev.mezzanineware.com/rest/mezzanine-tut-lesson-27/v1/support/ticket/ticketId/0e83d825-963e-4c9c-8340-75269d7c3f57"
+*/
+
+@PUT("v1/support/ticket")
+void updateSupportTicket(SupportTicket supportTicket) {
+    supportTicket.save();
+}
+
+// Example curl call for updating an existing support ticket
+/*
+curl -u 'user:pass' \
+-H "Content-Type: application/json" \
+-X PUT "https://dev.mezzanineware.com/rest/mezzanine-tut-lesson-27/v1/support/ticket" \
+-d '{
+    "_id": "0e83d825-963e-4c9c-8340-75269d7c3f57",
+    "receivedTime": 1536841629172,
+    "resolved": true,
+    "senderNumber": "27761231234",
+    "spam": false,
+    "text": "I require assistance in performing a stock update. Nevermind, I managed. Closing this ticket."
+}'
+*/
+
+@DELETE("v1/support/ticket/ticketId/{ticketId}")
+void deleteSupportTicket(uuid ticketId, bool purge) {
+    SupportTicket ticket = SupportTicket:read(ticketId);
+    if(ticket != null) {
+        if(purge != true) {
+            ticket.deleted = true;
+        }
+        else {
+            SupportTicket:delete(ticket);
+        }
+    }
+}
+
+// Example curl call for deleting an existing support ticket based on its id
+/*
+curl -u 'user:pass' \
+-H "Content-Type: application/json" \
+-X DELETE "https://dev.mezzanineware.com/rest/mezzanine-tut-lesson-27/v1/support/ticket/ticketId/0e83d825-963e-4c9c-8340-75269d7c3f57?purge=false" \
+*/
+
+@GET("v1/support/ticket/overview")
+json getSupportTicketsOverview() {
+    SupportTicket[] tickets = sql:query("select * from supportticket where deleted = false and spam = false and resolved = false order by receivedTime asc limit 5");
+    json[] ticketsSummary;
+    for(int i = 0; i < tickets.length(); i++) {
+        SupportTicket ticket = tickets.get(i);
+        ticketsSummary.append(convertSupportTicketToJson(ticket));
+    }
+
+    jsonarray ticketsSummaryArray = ticketsSummary;
+    json result = "{}";
+    result.jsonPut("oldestActiveTickets", ticketsSummaryArray);
+    result.jsonPut("activeTickets", countOpenSupportTickets());
+    result.jsonPut("spamTickets", countSpamSupportTickets());
+    result.jsonPut("resolvedTickets", countResolvedSupportTickets());
+    result.jsonPut("deletedTickets", countDeletedSupportTickets());
+    return result;
+}
+
+// Example curl call to get an overview of current support tickets
+/*
+curl -u 'user:pass' \
+-H "Content-Type: application/json" \
+-X GET "https://dev.mezzanineware.com/rest/mezzanine-tut-lesson-27/v1/support/ticket/overview" \
+*/
+
+int countDeletedSupportTickets() {
+    SupportTicket[] tickets = SupportTicket:equals(deleted, true);
+    return tickets.length();
+}
+
+int countSpamSupportTickets() {
+    SupportTicket[] tickets = SupportTicket:equals(spam, true);
+    return tickets.length();
+}
+
+int countResolvedSupportTickets() {
+    SupportTicket[] tickets = SupportTicket:equals(resolved, true);
+    return tickets.length();
+}
+
+int countOpenSupportTickets() {
+    SupportTicket[] tickets = SupportTicket:and(
+        equals(resolved, false), 
+        equals(spam, false), 
+        equals(deleted, false)
+    );
+    return tickets.length();
+}
+
+json convertSupportTicketToJson(SupportTicket ticket) {
+    json result = "{}";
+    result.jsonPut("dateLogged ", Strings:concat(ticket.receivedTime, ""));
+    result.jsonPut("loggedBy ", ticket.senderNumber);
+    result.jsonPut("description", ticket.text);
+    return result;
+}

@@ -1,0 +1,5 @@
+object ApiFarmerDocumentation {
+    string farmerMobileNumber;
+    uuid governmentAssistanceCertificateId;
+    blob governmentAssistanceCertificate;
+}

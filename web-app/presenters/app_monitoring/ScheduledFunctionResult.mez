@@ -1,0 +1,20 @@
+unit ScheduledFunctionResult;
+
+__scheduled_function_result__ scheduledFunctionResult;
+
+__scheduled_function_result__[] getScheduledFunctionResults() {
+	return __scheduled_function_result__:all();
+}
+
+
+DSL_VIEWS viewStackTrace() {
+	return DSL_VIEWS.ScheduledFunctionResultStacktrace;
+}
+
+DSL_VIEWS back() {
+	return DSL_VIEWS.ScheduledFunctionResult;
+}
+
+DSL_VIEWS backToMenu() {
+	return DSL_VIEWS.AppMonitoringMenu;
+}

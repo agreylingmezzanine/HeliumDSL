@@ -1,0 +1,5 @@
+persistent object Stock {
+    string name;
+    STOCK_TYPE stockType;
+    bool deleted;
+}

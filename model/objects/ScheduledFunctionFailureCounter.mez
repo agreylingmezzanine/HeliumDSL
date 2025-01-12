@@ -1,0 +1,6 @@
+persistent object ScheduledFunctionFailureCounter {
+	int consecutiveFailures;
+	int totalFailures;
+	int totalSuccesses;
+	datetime lastUpdate;
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.farmer_profile_crop_quality_pictures" unit="FarmerProfile" init="cropQualityPicsInit">
+		
+		<action label="action.back" action="backToMenu"/>
+		
+		<info label="info.last_updated">
+			<binding variable="farmer">
+				<attribute name="cropQualityPicturesUpdatedOn"/>
+			</binding>
+		</info>
+		
+		<!-- select box to for crop type to filter on -->
+		<select label="select.filter_on_crop_type">
+			<binding variable="cropPictureFilter"/>
+			<collectionSource function="getFarmerCropTypes">
+				<displayAttribute name="name"/>
+			</collectionSource>
+		</select>
+		
+		<!-- submit button to filter collection -->
+		<submit label="submit.apply_filter" action="applyCropGalleryFilter"/>
+		
+		<!-- gallery for tracking crop quality over time -->
+		<gallery title="gallery_title.farmer_crop_quality_pictures" imageAttribute="image" descriptionAttribute="description">
+			<collectionSource function="getFarmerCropQualityPictures"/>
+            <binding variable="selectedCropQualityPicture"/>
+		</gallery>
+
+		<fileupload label="fileupload.upload_new_crop_picture">
+			<binding variable="cropQualityPicture">
+				<attribute name="image"/>
+			</binding>
+		</fileupload>
+
+        <datefield label="datefield.photographed_on">
+			<binding variable="cropQualityPicture">
+                <attribute name="pictureDate" />
+			</binding>
+        </datefield>
+
+        <textfield label="textfield.description">
+			<binding variable="cropQualityPicture">
+                <attribute name="description" />
+			</binding>
+        </textfield>
+
+		<select label="select.filter_on_crop_type">
+			<binding variable="cropQualityPicture">
+                <attribute name="cropType" />
+            </binding>
+			<collectionSource function="getFarmerCropTypes">
+				<displayAttribute name="name"/>
+			</collectionSource>
+		</select>
+
+		<submit label="submit.save" action="saveCropQualityPicture"/>
+        <submit label="submit.edit_selected" action="editSelectedCropQualityPicture"/>
+        <submit label="submit.delete_selected" action="deleteSelectedCropQualityPicture"/>
+
+	</view>
+</ui>

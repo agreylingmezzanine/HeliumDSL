@@ -1,0 +1,44 @@
+unit StockMgmt;
+
+Stock stock;
+bool editing;
+
+// Init function to initialize unit variables
+void init() {
+	stock = Stock:new();
+	stock.deleted = false;
+	editing = false;
+}
+
+// Collection source for data table
+Stock[] getStockItems() {
+	return Stock:equals(deleted, false);
+}
+
+DSL_VIEWS saveStock() {
+
+	stock.save();
+	
+	// Re initialize the sate of all the unit variables
+	init();
+	
+	// Stay on the same view
+	return null;
+}
+
+// Callback for edit row action
+DSL_VIEWS editStock() {
+	editing = true;
+	return null;
+}
+
+// Callback for delete row action
+DSL_VIEWS deleteStock() {
+	stock.deleted = true;
+	init();
+	return null;
+}
+
+DSL_VIEWS backToEntityMgmtMenu() {
+	return DSL_VIEWS.EntityMgmtMenu;
+}

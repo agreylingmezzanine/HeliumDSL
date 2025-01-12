@@ -1,0 +1,31 @@
+{
+	"name":"Your Purchases",
+	"description":"Your purchases",
+	"rolesAllowed":["Farmer"],
+	"parameters":[
+		{
+			"parameterName":"startDate",
+			"displayName":"Start date",
+			"type":"date",
+			"searchDestination":"ReportParameterFilters:setStartDate"
+		},
+		{
+			"parameterName":"endDate",
+			"displayName":"End date",
+			"type":"date",
+			"searchDestination":"ReportParameterFilters:setEndDate"
+		},
+		{
+			"parameterName":"shopId",
+			"displayName":"Shop",
+			"type":"uuid",
+			"searchType":"Shop.name",
+			"searchSource":"ReportParameterFilters:shopFilter"
+		},
+		{
+			"parameterName":"minCost",
+			"displayName":"Minimum purchase cost",
+			"type":"string"
+		}
+	]
+}

@@ -1,0 +1,58 @@
+unit ScheduledFunctionResultCallbacks;
+
+@OnScheduledFunctionResultUpdate
+void scheduledFunctionResultCallback(__scheduled_function_result__ scheduledFunctionResult) {
+	
+	// Get or create the counter even if we don't know whether there has been a failure yet
+	ScheduledFunctionFailureCounter failureCounter = getOrCreateScheduledFunctionFailureCounter();
+	
+	
+	// If a failure has occurred, record it
+	if(scheduledFunctionResult.success == false) {
+		failureCounter.consecutiveFailures = failureCounter.consecutiveFailures + 1;
+		failureCounter.totalFailures = failureCounter.totalFailures + 1;
+		failureCounter.lastUpdate = Mez:now();
+	}
+	// Reset the consecutive failure count
+	else {
+		failureCounter.consecutiveFailures = 0;
+		failureCounter.totalSuccesses = failureCounter.totalSuccesses + 1;
+		failureCounter.lastUpdate = Mez:now();
+	}
+	
+	// Alert all system admins of consecutive failures
+	if(failureCounter.consecutiveFailures >= 5) {
+		notifySystemAdminsOfConsecutiveFailures(failureCounter.consecutiveFailures);
+	}
+}
+
+ScheduledFunctionFailureCounter getOrCreateScheduledFunctionFailureCounter() {
+	ScheduledFunctionFailureCounter[] failureCounters = ScheduledFunctionFailureCounter:all();
+	ScheduledFunctionFailureCounter failureCounter;
+	
+	// No counter, create one
+	if(failureCounters.length() == 0) {
+		failureCounter = ScheduledFunctionFailureCounter:new();
+		failureCounter.consecutiveFailures = 0;
+		failureCounter.totalFailures = 0;
+		failureCounter.totalSuccesses = 0;
+		failureCounter.save();
+		return failureCounter;
+	}
+	else {
+		return failureCounters.get(0);
+	}
+}
+
+void notifySystemAdminsOfConsecutiveFailures(int consecutiveCount) {
+	SystemAdmin[] systemAdmins = SystemAdmin:equals(deleted, false);
+	for(int i = 0; i < systemAdmins.length(); i++) {
+		SystemAdmin currentSystemAdmin = systemAdmins.get(i);
+		Mez:email(
+			currentSystemAdmin.emailAddress, 
+			"messaging.email.consecutive_schedule_function_failure_description", 
+			"messaging.email.consecutive_schedule_function_failure_subject", 
+			"messaging.email.consecutive_schedule_function_failure_body"
+		);
+	}
+}

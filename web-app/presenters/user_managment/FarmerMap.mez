@@ -1,0 +1,17 @@
+unit FarmerMap;
+
+string getMarkerTitle(Farmer farmer) {
+	return String:concat(farmer.firstName, " ", farmer.lastName);
+}
+
+string getMarkerDescription(Farmer farmer) {
+	return farmer.farmAddress;
+}
+
+string getMarkerIcon(Farmer farmer) {
+	return null;
+}
+
+Farmer[] getFarmers() {
+	return Farmer:equals(deleted, false);
+}

@@ -1,0 +1,11 @@
+object AddressBookListing {
+
+    // The id of this record from the remote service
+    uuid id;
+
+    // General attributes of the address book listing
+    string name;
+    string address;
+    int age;
+    string mobileNumber;
+}

@@ -1,0 +1,12 @@
+persistent object CropQualityPicture {
+	
+    date pictureDate;
+    string description;
+    blob image;
+
+    @ManyToOne
+    Farmer farmer via cropQualityPictures;
+
+    @ManyToOne
+    Stock cropType via CropQualityPictures;
+}

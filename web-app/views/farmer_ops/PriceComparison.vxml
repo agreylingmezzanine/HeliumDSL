@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View">
+    <view label="view_heading.price_comparison" unit="PriceComparison" init="init">
+
+		<menuitem label="menu_item.price_comparison" order="1" icon="PriceCompare">
+			<userRole>Farmer</userRole>
+		</menuitem>
+
+		<select label="select.stock">
+			<binding variable="selectedStock" />
+			<collectionSource function="getAllStock">
+				<displayAttribute name="name" />
+			</collectionSource>
+		</select>
+
+		<datefield label="datefield.estimate_date">
+			<binding variable="selectedDate" />
+		</datefield>
+
+		<textfield label="textfield.yearly_inflation">
+			<binding variable="yearlyInflation" />
+		</textfield>
+
+		<submit label="submit.refresh" action="refresh" />
+
+		<table>
+			<collectionSource function="getEstimates" />
+			<column heading="column_heading.shop">
+				<attributeName>shopName</attributeName>
+			</column>
+			<column heading="column_heading.last_stocktake_date">
+				<attributeName>lastUpdatedDate</attributeName>
+			</column>
+			<column heading="column_heading.last_stocktake_price">
+				<attributeName>lastUpdatedPrice</attributeName>
+			</column>
+			<column heading="column_heading.estimated_price">
+				<attributeName>estimatedPrice</attributeName>
+			</column>
+		</table>
+
+    </view>
+</ui>

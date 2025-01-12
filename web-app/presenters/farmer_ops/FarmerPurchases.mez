@@ -1,0 +1,200 @@
+unit FarmerPurchases;
+
+Farmer farmer;
+Shop shop;
+StockUpdate selectedStock;
+int purchaseQuantity;
+decimal goodsCost;
+decimal governmentAssistanceDiscount;
+int finalCost;
+FarmerPurchase farmerPurchase;
+
+void init() {
+	farmer = Farmer:user();
+	shop = null;
+	selectedStock = null;
+	purchaseQuantity = null;
+	resetCost();
+}
+
+Shop[] getAllShops() {
+	return Shop:equals(deleted, false);
+}
+
+string selectShop() {
+	if(shop == null) {
+		Mez:alertWarn("alert.no_shop_specified");
+	}
+	
+	return null;
+}
+
+string resetPurchase() {
+	init();
+	return null;
+}
+
+void resetCost() {
+	goodsCost = null;
+	governmentAssistanceDiscount = null;
+	finalCost = null;
+}
+
+StockUpdate[] getShopStockItems() {
+	// Stock updates for this shop
+	StockUpdate[] stockUpdates = shop.stockUpdates;
+	
+	// Stock that shop has based on stock updates
+	Stock[] stock = Stock:relationshipIn(stockUpdate, stockUpdates);
+	
+	// Get the latest stock update for each stock item
+	StockUpdate[] toReturn; 
+	for(int i = 0; i < stock.length(); i++) {
+		Stock currentStockItem = stock.get(i);
+		StockUpdate[] stockUpdatesForStockItem = stockUpdates.select(
+			and(
+				relationshipIn(stock, currentStockItem),
+				greaterThan(level, 0)
+			)
+		);
+		
+		stockUpdatesForStockItem.sortDesc("stocktakeDate");
+		toReturn.append(stockUpdatesForStockItem.first());
+	}
+	
+	return toReturn;
+}
+
+string selectItemToBuy() {
+	return null;
+}
+
+// Once a shop has been selected, the stock items for this shop can be displayed
+bool showStockTable() {
+	if(shop == null) {
+		return false;
+	}
+	return true;
+}
+
+// Once a stock item has been selected is can be displayed with a text field for the quantity to purchase
+bool showPurchaseForm() {
+	if(showStockTable() == false || selectedStock == null) {
+		return false;
+	}
+	return true;
+}
+
+string calculateCost() {
+	// validate quantity
+	if(purchaseQuantity == null) {
+		Mez:alertError("alert.no_quantity_specified");
+		resetCost();
+		return null;
+	}
+	
+	if(purchaseQuantity == null || purchaseQuantity <= 0) {
+		Mez:alertError("alert.quantity_greater_than_zero");
+		resetCost();
+		return null;
+	}
+	
+	if(purchaseQuantity > selectedStock.level) {
+		Mez:alertError("alert.not_enough_stock");
+		resetCost();
+		return null;
+	}
+	
+	goodsCost = purchaseQuantity * selectedStock.price;
+	
+	// If the farmer has a government assistance certificate uploaded he is entitled to 20% discount
+	if(farmer.governmentAssistanceCertificate != null) {
+		governmentAssistanceDiscount = goodsCost * 0.2;
+	}
+	else {
+		governmentAssistanceDiscount = 0;
+	}
+	
+	finalCost = goodsCost - governmentAssistanceDiscount;
+	
+	return null;
+}
+
+// Once the purchase quantity has been validated and the price calculated the cost summary can be displayed
+bool showSummary() {
+	if(showPurchaseForm() == false || goodsCost == null) {
+		return false;
+	}
+	return true;
+}
+
+// In the case of a farmer with a government assistance certificate the discount related to this should 
+bool governmentAssitanceApplicableAndSummary() {
+	if(showSummary() == false || farmer.governmentAssistanceCertificate == null) {
+		return false;
+	}
+	return true;
+}
+
+string makePurchase() {
+	
+	// Record the purchase
+	farmerPurchase = FarmerPurchase:new();
+	date purchasedon = Mez:now();
+	farmerPurchase.purchasedOn = purchasedon;
+	farmerPurchase.quantity = purchaseQuantity;
+	farmerPurchase.unitPrice = selectedStock.price;
+	farmerPurchase.goodsCost = goodsCost;
+	farmerPurchase.discount = governmentAssistanceDiscount;
+	farmerPurchase.finalCost = finalCost;
+	farmerPurchase.farmer = farmer;
+	farmerPurchase.stock = selectedStock.stock;
+	farmerPurchase.shop = shop;
+	farmerPurchase.save();
+	
+	// Make payment
+	//farmerPurchase.paymentId = farmer.pay(shop, "KES", finalCost);
+	
+	// Make payment with an additional reference
+	/*farmerPurchase.paymentId = farmer.payWithRef(
+		shop, "KES", farmerPurchase.finalCost, farmerPurchase._id,
+		Strings:concat(shop.name, " - ", shop.shopCode)
+	);*/
+	
+	Mez:alert("alert.purchase_successfull");
+	init();
+
+	// local variable that will be used as parameter in the Jasper report attached to the e-mail
+	uuid farmerPurchaseId = farmerPurchase._id;
+	
+	string subject = getFarmerPurchaseInvoiceFileName();
+	
+	Mez:emailAttach(
+		farmer.emailAddress, 
+		"messaging.email.farmer_purchase_invoice_description", 
+		"messaging.email.farmer_purchase_invoice_subject", 
+		"messaging.email.farmer_purchase_invoice_body",
+		{"farmer_purchase_invoice_report/FarmerPurchaseInvoice.jrxml", getFarmerPurchaseInvoiceFileName()},
+		EMAIL_TEMPLATES.email_template
+	);
+	
+	return null;
+}
+
+string getFarmerPurchaseInvoiceFileName() {
+	return Strings:concat("Invoice for ", farmer.firstName, " ", farmer.lastName, " ", farmerPurchase.purchasedOn);
+}
+
+FarmerPurchase[] getFarmerUserPurchases() {
+	Farmer farmer = Farmer:user();
+	return farmer.purchases;
+}
+
+
+DSL_VIEWS newPurchase() {
+	return DSL_VIEWS.NewFarmerPurchase;
+}
+
+DSL_VIEWS historicPurchases() {
+	return DSL_VIEWS.HistoricFarmerPurchases;
+}

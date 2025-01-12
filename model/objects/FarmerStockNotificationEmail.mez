@@ -1,0 +1,10 @@
+persistent object FarmerStockNotificationEmail {
+	datetime sentOn;
+	string messageContent;
+	
+	@ManyToOne
+	StockUpdate stockUpdate via stockUpdateEmails;
+	
+	@ManyToOne
+	Farmer farmer via farmerStockUpdateEmails;
+}

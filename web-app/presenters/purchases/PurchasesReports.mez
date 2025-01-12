@@ -1,0 +1,74 @@
+unit PurchasesReports;
+
+datetime startDate;
+datetime endDate;
+
+Shop selectedShop;
+Shop[] availableShops;
+
+void init() {
+	// Initialise the start and end date filters
+	endDate = Mez:now();
+	startDate = Date:addDays(endDate, -30);
+	
+	// Initialise the available shops collection and selected shop variable
+	availableShops = Shop:relationshipIn(owners, ShopOwner:user());
+
+	if (availableShops.length() > 0) {
+		selectedShop = availableShops.get(0);
+	}
+}
+
+
+// Apply the date and shop filters
+DSL_VIEWS submitFilter() {
+	
+	if(startDate == null) {
+		Mez:alertError("alert_error.no_start_date");
+		return null;
+	}
+	
+	if(endDate == null) {
+		Mez:alertError("alert_error.no_end_date");
+		return null;
+	}
+	
+	if(selectedShop == null) {
+		Mez:alertError("alert_error.no_shop_selected");
+		return null;
+	}
+	
+	return DSL_VIEWS.PurchaseFrequency;
+}
+
+
+// Execute SQL for report data and return as collection source for data table
+PurchaseFrequencyResult[] getPurchaseFrequency() {
+	string query = /%
+		WITH intervals AS (
+            SELECT weekstarts.weekstart AS weekstart, weekstarts.weekstart + 7 AS weekend
+            FROM (
+                SELECT 
+                weeks.i - cast(extract(dow from weeks.i) as int) + 1 as weekstart
+                FROM (
+                    SELECT i::date from generate_series(?, ?, '1 week'::interval) i
+                ) AS weeks
+            ) AS weekstarts
+        )
+        SELECT weekstart, weekend, count(*)::int
+        FROM farmerpurchase 
+        JOIN intervals ON farmerpurchase.purchasedon > (weekstart - 1) and farmerpurchase.purchasedon < (weekend + 1) where farmerpurchase.shop_fk = ? GROUP BY weekstart, weekend;
+	%/;
+	
+	PurchaseFrequencyResult[] result = sql:query(query, startDate, endDate, selectedShop._id);
+	return result;
+}
+
+// 
+DSL_VIEWS navigateToPurchaseDashboard() {
+    return DSL_VIEWS.PurchaseDashboard;
+}
+
+DSL_VIEWS navigateToPurchaseFrequency() {
+    return DSL_VIEWS.PurchaseFrequency;
+}

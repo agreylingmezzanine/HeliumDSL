@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.stock_management" unit="StockMgmt" init="init">
+	
+		<action label="action.back" action="backToEntityMgmtMenu"/>
+
+		<textfield label="info.name">
+			<binding variable="stock">
+				<attribute name="name"/>
+			</binding>
+		</textfield>
+		
+		<select label="info.stock_type">
+			<binding variable="stock">
+				<attribute name="stockType"/>
+			</binding>
+			<enum>STOCK_TYPE</enum>
+		</select>
+		
+		<submit label="submit.save" action="saveStock"/>
+
+		<!-- stock items already in system -->
+		<table title="table_title.stock_items">
+			<collectionSource function="getStockItems"/>
+			<column heading="column_heading.name">
+				<attributeName>name</attributeName>
+			</column>
+			<column heading="column_heading.stock_type">
+				<attributeName>stockType</attributeName>
+			</column>
+                        <column heading="column_heading.id">
+				<attributeName>_id</attributeName>
+			</column>
+			
+			<rowAction label="button.edit" action="editStock">
+				<binding variable="stock" />
+			</rowAction>
+			<rowAction label="button.remove" action="deleteStock">
+				<binding variable="stock" />
+				<confirm subject="confirm_subject.removing_stock" body="confirm_body.removing_stock" />
+			</rowAction>
+		</table>
+	</view>
+</ui>

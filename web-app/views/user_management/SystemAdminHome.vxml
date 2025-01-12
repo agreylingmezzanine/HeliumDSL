@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	
+	<!-- This view is bound to the "SystemAdminHome" unit and upon loading the view the function with name "init" will be executed -->
+	<view label="view_heading.system_admin_home" unit="SystemAdminHome" init="init">
+	
+		<!-- The menu item defines a possible entry point to a view -->
+		<!-- The order of the menu item can be specified, starting at 0 -->
+		<!-- The icon to be used for the menu item can be specified using the file name without extension -->
+		<menuitem label="menu_item.system_admin_home" icon="UserProfile" order="0">
+			<userRole>System Admin</userRole>
+		</menuitem>
+		
+		<!-- Info widget to display message from language file -->
+		<info label="info.welcome" value="info.system_admin_welcome"/>
+		
+		<!-- Info widgets to display attributes from unit variable -->
+		<!-- Info widget can be bound to a function -->
+		<info label="info.email_address">
+			<binding function="getSystemAdminEmailAddress"/>
+		</info>
+		
+		<!-- Info widget can also be bound to a unit variable -->
+		<info label="info.mobile_number">
+			<binding variable="currentSystemAdminUser">
+				<attribute name="mobileNumber"/>
+			</binding>
+		</info>
+	</view>
+</ui>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.app_monitoring" unit="AppMonitoringMenu" init="initMenu">
+	
+		<menuitem label="menu_item.app_monitoring" icon="Monitoring" order="6">
+			<userRole>System Admin</userRole>
+		</menuitem>
+		
+		<table csvExport="disabled">
+			<collectionSource variable="menuItems"/>
+			<column heading="empty">
+				<attributeName>label</attributeName>
+			</column>
+			
+			<rowAction label="button.select" action="selectMenuItem">
+				<binding variable="menuItem"/>
+			</rowAction>
+		</table>
+	</view>
+</ui>

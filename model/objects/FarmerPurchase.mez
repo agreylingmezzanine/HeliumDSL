@@ -1,0 +1,29 @@
+persistent object FarmerPurchase {
+	
+	// When was the purchase made
+	datetime purchasedOn;
+	
+	// Quantity and cost of purchase
+	int quantity;
+	decimal unitPrice;
+	decimal goodsCost;
+	decimal discount;
+	int finalCost;
+	
+	// Helium provided payment status and id
+	datetime paymentStatusUpdatedOn;
+	PAYMENT_STATUS paymentStatus;
+	uuid paymentId; 
+	
+	// Stock item that was purchased
+	@ManyToOne
+	Stock stock via purchases;
+	
+	// Farmer that made the purchase
+	@ManyToOne
+	Farmer farmer via purchases;
+	
+	// Shop at which purchase was made
+	@ManyToOne
+	Shop shop via purchases;
+}

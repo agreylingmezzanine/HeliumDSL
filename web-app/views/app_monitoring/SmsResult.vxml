@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.sms_results" unit="SmsResult">
+
+		<action label="action.back" action="backToMenu"/>
+	
+		<table>
+			<collectionSource function="getSmsResults"/>
+			<column heading="column_heading.time_started">
+				<attributeName>datetimestampStarted</attributeName>
+			</column>
+			<column heading="column_heading.time_finished">
+				<attributeName>datetimestampFinished</attributeName>
+			</column>
+			<column heading="column_heading.success">
+				<attributeName>success</attributeName>
+			</column>
+			<column heading="column_heading.destination">
+				<attributeName>destination</attributeName>
+			</column>
+			<column heading="column_heading.attempt">
+				<attributeName>attempt</attributeName>
+			</column>
+			<column heading="column_heading.error">
+				<attributeName>error</attributeName>
+			</column>
+			<column heading="column_heading.done_processing">
+				<attributeName>doneProcessing</attributeName>
+			</column>
+			<column heading="column_heading.sms_outbound_config_version_id">
+				<attributeName>smsOutboundConfigurationVersionId</attributeName>
+			</column>
+			<column heading="column_heading.sms_outbound_config_name">
+				<attributeName>smsOutboundConfigurationName</attributeName>
+			</column>
+			<column heading="column_heading.colhead.sms_id">
+				<attributeName>smsId</attributeName>
+			</column>
+		</table>
+	</view>
+</ui>

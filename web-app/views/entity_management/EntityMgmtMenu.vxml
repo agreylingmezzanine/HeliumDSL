@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.entity_management" unit="EntityMgmtMenu" init="initMenu">
+	
+		<menuitem label="menu_item.entity_management" icon="Admin" order="2">
+			<userRole>System Admin</userRole>
+		</menuitem>
+		
+		<table csvExport="disabled">
+			<collectionSource variable="menuItems"/>
+			<column heading="column_heading.entity_type">
+				<attributeName>label</attributeName>
+			</column>
+			<column heading="column_heading.entity_count">
+				<attributeName>description</attributeName>
+			</column>
+			
+			<rowAction label="button.select" action="selectMenuItem">
+				<binding variable="menuItem"/>
+			</rowAction>
+		</table>
+	</view>
+</ui>

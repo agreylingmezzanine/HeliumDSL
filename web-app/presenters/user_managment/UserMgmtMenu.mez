@@ -1,0 +1,66 @@
+unit UserMgmtMenu;
+
+// Variable to mind on from 'select' row action
+MenuItem menuItem;
+
+// Menu table collection source
+MenuItem[] menuItems;
+
+// Create the menu items for our menu
+void initMenu() {
+	menuItems.clear();
+	
+	// Menu item for System Admin user management
+	MenuItem systemAdminMenuItem = createMenuItem(
+		String:translate("menu_item.system_admin_user_management"), 
+		DSL_VIEWS.SystemAdminUserMgmt,
+		countSystemAdmins()
+	);
+	menuItems.append(systemAdminMenuItem);
+	
+	// Menu item for Shop Owner user management
+	MenuItem shopOwnerMenuItem = createMenuItem(
+		String:translate("menu_item.shop_owner_user_management"), 
+		DSL_VIEWS.ShopOwnerUserMgmt,
+		countShopOwners()
+	);
+	menuItems.append(shopOwnerMenuItem);
+	
+	// Menu item for Farmer user management
+	MenuItem farmerMenuItem = createMenuItem(
+		String:translate("menu_item.farmer_user_management"), 
+		DSL_VIEWS.FarmerUserMgmt,
+		countFarmers()
+	);
+	menuItems.append(farmerMenuItem);
+}
+
+// Helper functions to count users in system
+int countFarmers() {
+	Farmer[] farmers = Farmer:equals(deleted, false);
+	return farmers.length();
+}
+
+int countSystemAdmins() {
+	SystemAdmin[] systemAdmins = SystemAdmin:equals(deleted, false);
+	return systemAdmins.length();
+}
+
+int countShopOwners() {
+	ShopOwner[] shopOwners = ShopOwner:equals(deleted, false);
+	return shopOwners.length();
+}
+
+// Helper function to create menu item
+MenuItem createMenuItem(string label, DSL_VIEWS navigationDestination, int userCount) {
+	MenuItem menuItem = MenuItem:new();
+	menuItem.label = label;
+	menuItem.description = userCount;
+	menuItem.navigationDestination = navigationDestination;
+	return menuItem;
+}
+
+// Navigate to the view associated with the select menu item
+DSL_VIEWS selectMenuItem() {
+	return menuItem.navigationDestination;
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.address_book_management" unit="AddressBookMgmt" init="init">
+
+	    <menuitem label="menu_item.address_book" icon="Globe" order="3">
+		<userRole>System Admin</userRole>
+		<userRole>Farmer</userRole>
+		<userRole>Shop Owner</userRole>
+	    </menuitem>
+
+	    <textfield label="textfield.search_name">
+		<binding variable="searchParam"/>
+	    </textfield>
+
+	    <submit label="submit.search" action="searchAddressBook"/>
+
+	    <table title="table_title.found_results">
+		<visible variable="showResults"/>
+		<collectionSource variable="foundResults"/>
+		<column heading="column_heading.name">
+		    <attributeName>name</attributeName>
+		</column>
+		<column heading="column_heading.mobile_number">
+		    <attributeName>mobileNumber</attributeName>
+		</column>
+		<column heading="column_heading.address">
+		    <attributeName>address</attributeName>
+		</column>
+		<column heading="column_heading.age">
+		    <attributeName>age</attributeName>
+		</column>
+		<rowAction label="button.update" action="updateListing">
+		    <binding variable="selectedListing"/>
+		</rowAction>
+		<rowAction label="button.delete" action="deleteListing">
+		    <binding variable="selectedListing"/>
+		</rowAction>
+	    </table>
+
+	    <textfield label="textfield.name">
+		<visible variable="showResults"/>
+		<binding variable="name"/>
+	    </textfield>
+
+	    <textfield label="textfield.mobile_number">
+		<visible variable="showResults"/>
+		<binding variable="mobileNumber"/>
+	    </textfield>
+
+	    <textfield label="textfield.age">
+		<visible variable="showResults"/>
+		<binding variable="age"/>
+	    </textfield>
+
+	    <textarea label="textarea.farm_address">
+		<visible variable="showResults"/>
+		<binding variable="address"/>
+	    </textarea>
+
+	    <submit label="submit.add_listing" action="submitListing">
+		<visible variable="showResults"/>
+	    </submit>
+	</view>
+</ui>

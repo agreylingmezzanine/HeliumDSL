@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.shop_owner_user_details" unit="ShopOwnerUserMgmt">
+	
+		<action label="action.back" action="back" />
+
+		<info label="info.first_name">
+			<binding variable="shopOwner">
+				<attribute name="firstName"/>
+			</binding>
+		</info>
+
+		<info label="info.last_name">
+			<binding variable="shopOwner">
+				<attribute name="lastName"/>
+			</binding>
+		</info>
+
+		<info label="info.email_address">
+			<binding variable="shopOwner">
+				<attribute name="emailAddress"/>
+			</binding>
+		</info>
+		
+		<info label="info.mobile_number">
+			<binding variable="shopOwner">
+				<attribute name="mobileNumber"/>
+			</binding>
+		</info>
+		
+		<!-- table of shops that are owned by this shop owner -->
+		<table title="table_title.shop_owner_shops">
+			<collectionSource function="getShopOwnerShops"/>
+			<column heading="column_heading.name">
+				<attributeName>name</attributeName>
+			</column>
+			<column heading="column_heading.description">
+				<attributeName>description</attributeName>
+			</column>
+		</table>
+	</view>
+</ui>

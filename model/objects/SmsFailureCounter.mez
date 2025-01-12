@@ -1,0 +1,6 @@
+persistent object SmsFailureCounter {
+	int consecutiveFailures;
+	int totalFailures;
+	int totalSuccesses;
+	datetime lastUpdate;
+}

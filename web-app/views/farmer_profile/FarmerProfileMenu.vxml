@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.farmer_profile" unit="FarmerProfileMenu" init="initMenu">
+	
+		<menuitem label="menu_item.farmer_profile" order="0" icon="UserProfile">
+			<userRole>Farmer</userRole>
+		</menuitem>
+		
+		<table csvExport="disabled">
+			<collectionSource variable="menuItems"/>
+			<column heading="column_heading.profile_category">
+				<attributeName>label</attributeName>
+			</column>
+			<column heading="column_heading.last_updated_on">
+				<attributeName>description</attributeName>
+			</column>
+			
+			<rowAction label="button.select" action="selectMenuItem">
+				<binding variable="menuItem"/>
+			</rowAction>
+		</table>
+	</view>
+</ui>

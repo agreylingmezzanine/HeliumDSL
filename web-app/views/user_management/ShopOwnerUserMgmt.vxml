@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.shop_owner_user_management" unit="ShopOwnerUserMgmt" init="init">
+		
+		<action label="action.back" action="backToUserMgmtMenu"/>
+
+		<textfield label="textfield.first_name" datatype="text">
+			<binding variable="shopOwner">
+				<attribute name="firstName"/>
+			</binding>
+		</textfield>
+
+		<textfield label="textfield.last_name">
+			<binding variable="shopOwner">
+				<attribute name="lastName"/>
+			</binding>
+		</textfield>
+
+		<textfield label="textfield.email_address">
+			<binding variable="shopOwner">
+				<attribute name="emailAddress"/>
+			</binding>
+		</textfield>
+
+		<textfield label="textfield.mobile_number" >
+			<binding variable="shopOwner">
+				<attribute name="mobileNumber"/>
+			</binding>
+		</textfield>
+
+		<submit label="submit.save" action="saveUser"/>
+
+		<table title="table_title.shop_owners" csvExport="disabled">
+			<collectionSource function="getShopOwners"/>
+			<column heading="column_heading.name">
+				<attributeName>firstName</attributeName>
+				<attributeName>lastName</attributeName>
+			</column>
+			<rowAction label="button.view" action="viewUser">
+				<binding variable="shopOwner" />
+			</rowAction>
+			<rowAction label="button.edit" action="editUser">
+				<binding variable="shopOwner" />
+			</rowAction>
+			<rowAction label="button.remove" action="removeUser">
+				<binding variable="shopOwner" />
+				<confirm subject="confirm_subject.removing_user" body="confirm_body.removing_user" />
+			</rowAction>
+		</table>
+	</view>
+</ui>

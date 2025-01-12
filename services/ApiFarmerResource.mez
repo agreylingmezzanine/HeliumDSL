@@ -1,0 +1,91 @@
+unit ApiFarmerResource;
+
+@POST("v1/farmer/profile/documentation")
+ApiResponse postFarmerDocumentation(ApiFarmerDocumentation farmerDocumentation) {
+    
+    // initiate the response
+    ApiResponse response = ApiResponse:new();
+    response.requestReceived = Mez:now();
+    
+    // validate the arguments
+    if(farmerDocumentation.farmerMobileNumber == null) {
+        response.success = false;
+        response.message = "Invalid arguments, please specify the farmer mobile number";
+        return response;
+    }
+    if(farmerDocumentation.governmentAssistanceCertificateId == null) {
+        response.success = false;
+        response.message = "Invalid arguments, please specify the id for the government assistance certificate";
+        return response;
+    }
+    if(farmerDocumentation.governmentAssistanceCertificate == null) {
+        response.success = false;
+        response.message = "Invalid arguments, please specify the government assistance certificate using a base64 encoded byte array string";
+        return response;
+    }
+
+    // get the farmer for the specified mobile number
+    Farmer farmer = findFarmerWithNumber(farmerDocumentation.farmerMobileNumber);
+    if(farmer == null) {
+        response.success = false;
+        response.message = Strings:concat("A farmer with the specified mobile number ", farmerDocumentation.farmerMobileNumber, " could not be retrieved");
+        return response;
+    }
+
+    farmer.governmentAssistanceCertificateId = farmerDocumentation.governmentAssistanceCertificateId;
+    farmer.governmentAssistanceCertificate = farmerDocumentation.governmentAssistanceCertificate;
+    farmer.documentationProfileUpdatedOn = Mez:now();
+    farmer.save();
+
+    response.requestProcessed = Mez:now();
+    response.success = true;
+    response.message = "Farmer documentation successfully updated";
+    return response;
+}
+
+// Example curl call for posting farmer documentation:
+/* curl -u 'user:pass' \
+-H "Content-Type: application/json" \
+-X POST "https://dev.mezzanineware.com/rest/mezzanine-tut-lesson-27/farmer/profile/documentation" \
+-d '{
+  "farmerMobileNumber":"27763303624",
+  "governmentAssistanceCertificateId":"7c3c66dd-992d-489a-a4e0-99da1f225422",
+  "governmentAssistanceCertificate":"WW91IGFyZSBhcHByb3ZlZCBmb3IgZ292ZXJubWVudCBhc3Npc3RhbmNlLg==",
+  "governmentAssistanceCertificate_fname__":"FarmerGovernmentAssistance.txt",
+  "governmentAssistanceCertificate_size__":43,
+  "governmentAssistanceCertificate_mtype__":"text/plain"
+}' */
+
+@ResponseExclude("_locale")
+@ResponseExclude("_timeZone")
+@ResponseExclude("deleted")
+@ResponseExclude("governmentAssistanceCertificate_fname__")
+@ResponseExclude("governmentAssistanceCertificate_mtype__")
+@ResponseExclude("governmentAssistanceCertificate_size__")
+@ResponseExclude("governmentAssistanceCertificate")
+@ResponseExpand("purchases")
+@ResponseExpand("cropTypes")
+@ResponseExclude("purchases._id")
+@ResponseExclude("purchases.farmer")
+@ResponseExpand("purchases.shop")
+@GET("v1/farmer/mobileNumber/{mobileNumber}")
+Farmer getFarmerWithMobileNumber(string mobileNumber) {
+    return findFarmerWithNumber(mobileNumber);
+}
+
+// Example curl call for getting farmer details
+/* curl -u 'user:pass' \
+-H "Content-Type: application/json" \
+-X GET "https://dev.mezzanineware.com/rest/mezzanine-tut-lesson-27/v1/farmer/mobileNumber/27763303624" */
+
+Farmer findFarmerWithNumber(string mobileNumber) {
+    Farmer[] farmers = Farmer:and(
+        equals(mobileNumber, mobileNumber),
+        notEquals(deleted, true)
+    );
+    if(farmers.length() > 0) {
+        return farmers.get(0);
+    }
+
+    return null;
+}

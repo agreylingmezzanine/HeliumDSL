@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.fake_inbound_messages" unit="FakeInboundMessages">
+	
+		<menuitem label="menu_item.fake_inbound_messages" icon="Gears" order="4">
+			<userRole>System Admin</userRole>
+		</menuitem>
+
+		<textfield label="textfield.sender_number">
+			<binding variable="senderNumber"/>
+		</textfield>
+    
+		<textarea label="textarea.message_content">
+			<binding variable="messageContent"/>
+		</textarea>
+    
+		<submit label="submit.send" action="sendInboundMessage"/>
+
+	</view>
+</ui>

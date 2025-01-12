@@ -1,0 +1,53 @@
+unit EntityMgmtMenu;
+
+// Variable to mind on from 'select' row action
+MenuItem menuItem;
+
+// Menu table collection source
+MenuItem[] menuItems;
+
+// Create the menu items for our menu
+void initMenu() {
+	menuItems.clear();
+	
+	// Menu item for shops
+	MenuItem shopMenuItem = createMenuItem(
+		String:translate("menu_item.shop_management"), 
+		DSL_VIEWS.ShopMgmt,
+		countShops()
+	);
+	menuItems.append(shopMenuItem);
+	
+	// Menu item for stock items 
+	MenuItem stockMenuItem = createMenuItem(
+		String:translate("menu_item.stock_management"), 
+		DSL_VIEWS.StockMgmt,
+		countStockItems()
+	);
+	menuItems.append(stockMenuItem);
+}
+
+// Helper functions to count users in system
+int countShops() {
+	Shop[] shops = Shop:equals(deleted, false);
+	return shops.length();
+}
+
+int countStockItems() {
+	Stock[] stockItems = Stock:equals(deleted, false);
+	return stockItems.length();
+}
+
+// Helper function to create menu item
+MenuItem createMenuItem(string label, DSL_VIEWS navigationDestination, int entityCount) {
+	MenuItem menuItem = MenuItem:new();
+	menuItem.label = label;
+	menuItem.description = entityCount;
+	menuItem.navigationDestination = navigationDestination;
+	return menuItem;
+}
+
+// Navigate to the view associated with the select menu item
+DSL_VIEWS selectMenuItem() {
+	return menuItem.navigationDestination;
+}

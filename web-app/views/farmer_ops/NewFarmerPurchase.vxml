@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.purchase" unit="FarmerPurchases" init="init">
+	
+		<action label="action.historic_purchases" action="historicPurchases"/>
+	
+		<menuitem label="menu_item.farmer_purchases" order="1" icon="Admin">
+			<userRole>Farmer</userRole>
+		</menuitem>
+	
+		<!-- visible by default to select shop to purchase from -->
+		<select label="select.shop">
+			<binding variable="shop"/>
+			<collectionSource function="getAllShops">
+				<displayAttribute name="name"/>
+				<displayAttribute name="shopCode"/>
+			</collectionSource>
+		</select>
+		
+		<submit label="submit.select_shop" action="selectShop"/>
+		<button label="button.reset_purchase" action="resetPurchase">
+			<visible function="showStockTable"/>
+		</button>
+		
+		<!-- visible once shop has been selected -->
+		<info label="info.selected_shop">
+			<visible function="showStockTable"/>
+			<binding variable="shop">
+				<attribute name="name"/>
+			</binding>
+		</info>
+		
+		<table title="table_title.available_stock">
+			<visible function="showStockTable"/>
+			<collectionSource function="getShopStockItems"/>
+			<column heading="column_heading.stock_name">
+				<attributeName>stockName</attributeName>
+			</column>
+			<column heading="column_heading.stock_level">
+				<attributeName>level</attributeName>
+			</column>
+			<column heading="column_heading.price">
+				<attributeName>price</attributeName>
+			</column>
+			
+			<rowAction label="button.select" action="selectItemToBuy">
+				<binding variable="selectedStock"/>
+			</rowAction>
+		</table>
+		
+		
+		<!-- visible once shop and stock item has been selected -->
+		<info label="info.selected_stock">
+			<visible function="showPurchaseForm"/>
+			<binding variable="selectedStock">
+				<attribute name="stockName"/>
+			</binding>
+		</info>
+		
+		<info label="info.selected_stock_quantity_available">
+			<visible function="showPurchaseForm"/>
+			<binding variable="selectedStock">
+				<attribute name="level"/>
+			</binding>
+		</info>
+		
+		<info label="info.selected_stock_price">
+			<visible function="showPurchaseForm"/>
+			<binding variable="selectedStock">
+				<attribute name="price"/>
+			</binding>
+		</info>
+		
+		<textfield label="textarea.quantity_to_purchase">
+			<visible function="showPurchaseForm"/>
+			<binding variable="purchaseQuantity"/>
+		</textfield>
+		
+		<submit label="submit.calculate_cost" action="calculateCost">
+			<visible function="showPurchaseForm"/>
+		</submit>
+		
+		<!-- visible once the quantity has been validated and the cost has been calculated -->
+		<info label="info.goods_cost">
+			<visible function="showSummary"/>
+			<binding variable="goodsCost"/>
+		</info>
+		
+		<info label="info.government_assistance_discount">
+			<visible function="governmentAssitanceApplicableAndSummary"/>
+			<binding variable="governmentAssistanceDiscount"/>
+		</info>
+		
+		<info label="info.final_cost">
+			<visible function="showSummary"/>
+			<binding variable="finalCost"/>
+		</info>
+		
+		<submit label="submit.make_purchase" action="makePurchase">
+			<visible function="showSummary"/>
+		</submit>
+	</view>
+</ui>

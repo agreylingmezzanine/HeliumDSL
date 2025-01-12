@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.farmer_profile_general" unit="FarmerProfile" init="init">
+	
+		<action label="action.back" action="backToMenu"/>
+		
+		<info label="info.registered_on">
+			<binding variable="farmer">
+				<attribute name="registeredOn"/>
+			</binding>
+		</info>
+		
+		<info label="info.updated_on">
+			<binding variable="farmer">
+				<attribute name="updatedOn"/>
+			</binding>
+		</info>
+		
+		<info label="info.first_name">
+			<binding variable="farmer">
+				<attribute name="firstName"/>
+			</binding>
+		</info>
+		
+		<info label="info.last_name">
+			<binding variable="farmer">
+				<attribute name="lastName"/>
+			</binding>
+		</info>
+		
+		<info label="info.mobile_number">
+			<binding variable="farmer">
+				<attribute name="mobileNumber"/>
+			</binding>
+		</info>
+		
+		<info label="info.email_address">
+			<binding variable="farmer">
+				<attribute name="emailAddress"/>
+			</binding>
+		</info>
+		
+		<info label="info.farm_address">
+			<binding variable="farmer">
+				<attribute name="farmAddress"/>
+			</binding>
+		</info>
+		
+		<info label="info.farm_size">
+			<binding variable="farmer">
+				<attribute name="farmSize"/>
+			</binding>
+		</info>
+		
+		<info label="info.longitude">
+			<binding variable="farmer">
+				<attribute name="longitude"/>
+			</binding>
+		</info>
+		
+		<info label="info.latitude">
+			<binding variable="farmer">
+				<attribute name="latitude"/>
+			</binding>
+		</info>
+		
+		<info label="info.state">
+			<binding variable="farmer">
+				<attribute name="state"/>
+			</binding>
+		</info>
+	</view>
+</ui>

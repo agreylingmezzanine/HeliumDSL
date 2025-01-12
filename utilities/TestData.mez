@@ -1,0 +1,46 @@
+unit TestData;
+
+void generateStockItems() {
+    if (stockExists() == false) {
+        string[] stockNames = getStockNames();
+        for (int i = 0; i < stockNames.length(); i++) {
+            Stock stock = Stock:new();
+            stock.name = stockNames.get(i);
+            stock.stockType = getStockType(stockNames.get(i));
+            stock.deleted = false;
+            stock.save();
+        }
+    }
+}
+
+bool stockExists() {
+    Stock[] stocks = Stock:equals(name, "Corn");
+    if (stocks.length() > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+string[] getStockNames() {
+    string[] result;
+    result.append("Corn");
+    result.append("Wheat");
+    result.append("Rice");
+    result.append("Beans");
+    result.append("Groundnut");
+    result.append("Cowpea");
+    result.append("A-grade grain fertilizer");
+    result.append("B-grade grain fertilizer");
+    result.append("A-grade legume fertilizer");
+    result.append("B-grade legume fertilizer");
+    return result;
+}
+
+STOCK_TYPE getStockType(string stockName) {
+    if (String:endsWith(stockName, "fertilizer") ==  true) {
+        return STOCK_TYPE.fertilizer;
+    } else {
+        return STOCK_TYPE.crop_seed;
+    }
+}

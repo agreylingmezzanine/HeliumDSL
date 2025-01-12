@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.farmer_profile_messaging" unit="FarmerProfile" init="init">
+	
+		<action label="action.back" action="backToMenu"/>
+		
+		<info label="info.last_updated">
+			<binding variable="farmer">
+				<attribute name="messagingProfileUpdatedOn"/>
+			</binding>
+		</info>
+		
+		<checkbox label="checkbox.opt_in_sms_messaging">
+			<binding variable="farmer">
+				<attribute name="smsMessaging"/>
+			</binding>
+		</checkbox>
+		
+		<checkbox label="checkbox.opt_in_email_messaging">
+			<binding variable="farmer">
+				<attribute name="emailMessaging"/>
+			</binding>
+		</checkbox>
+		
+		<submit label="submit.submit_messaging_preferences" action="submitMessagingPreferences"/>
+		
+		
+		<info label="empty" value="info.shop_notification_info">
+			<visible function="messagingOptedIn"/>
+		</info>
+		
+		<select label="select.shop">
+			<visible function="messagingOptedIn"/>
+			<binding variable="messagingShop"/>
+			<collectionSource function="getEligibleShopsForMessaging">
+				<displayAttribute name="name"/>
+				<displayAttribute name="shopCode"/>
+			</collectionSource>
+		</select>
+		
+		<submit label="submit.add_messaging_shop" action="addMessagingShop">
+			<visible function="messagingOptedIn"/>
+		</submit>
+		
+		<submit label="button.remove_all_messaging_shops" action="removeAllMessagingShops">
+			<visible function="messagingOptedIn"/>
+		</submit>
+		
+		<table title="table_title.shops">
+			<visible function="messagingOptedIn"/>
+			<collectionSource function="getFarmerShopsForMessaging"/>
+			<column heading="column_heading.shop_code">
+				<attributeName>shopCode</attributeName>
+			</column>
+			<column heading="column_heading.name">
+				<attributeName>name</attributeName>
+			</column>
+			<column heading="column_heading.description">
+				<attributeName>description</attributeName>
+			</column>
+			<column heading="column_heading.state">
+				<attributeName>name</attributeName>
+			</column>
+			
+			<rowAction label="button.remove" action="removeMessagingShop">
+				<binding variable="messagingShop"/>
+			</rowAction>
+		</table>
+	</view>
+</ui>

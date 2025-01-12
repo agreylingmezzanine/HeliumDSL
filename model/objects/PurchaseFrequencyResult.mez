@@ -1,0 +1,6 @@
+// Object used for results from purchase frequency SQL select query
+object PurchaseFrequencyResult {
+	date weekStart;
+	date weekEnd;
+	int count;
+}

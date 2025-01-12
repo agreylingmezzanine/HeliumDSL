@@ -1,0 +1,67 @@
+unit Support;
+
+@ReceiveSms("Inbound Message Function")
+void receiveSms(string number, string text) {
+	SupportTicket ticket = SupportTicket:new();
+	ticket.receivedTime = Mez:now();
+	ticket.text = text;
+	ticket.senderNumber = number;
+	ticket.resolved = false;
+	ticket.spam = false;
+        ticket.deleted = false;
+	ticket.save();
+}
+
+void handleComment() {
+	string do="nothing";
+}
+
+string getTicketTitle(SupportTicket ticket) {
+	return ticket.senderNumber;
+}
+
+string getTicketText(SupportTicket ticket) {
+	return ticket.text;
+}
+
+datetime getTicketTime(SupportTicket ticket) {
+	return ticket.receivedTime;
+}
+
+string getTicketIcon(SupportTicket ticket) {
+	return "Person";
+}
+
+SupportTicket[] getUnresolvedTickets() {
+	return SupportTicket:and(
+            equals(spam, false), 
+            equals(resolved, false),
+            equals(deleted, false)
+        );
+}
+
+void resolveTicket(SupportTicket ticket) {
+	ticket.resolved = true;
+	ticket.save();
+}
+
+void deleteTicket(SupportTicket ticket) {
+	ticket.spam = true;
+	ticket.save();
+}
+
+// Resolve tickets that have not been resolved and not been marked as spam
+DSL_VIEWS resolveAllTickets() {
+	string query = "update supportticket set resolved=true where resolved=false and spam=false";
+	int updates = sql:execute(query);
+	Mez:alert("alert.tickets_resolved");
+	return DSL_VIEWS.Support;
+}
+
+// Mark tickets as spam that have not been marked as such and have not been resolved
+DSL_VIEWS markAllTicketsAsSpam() {
+	string query = "update supportticket set spam=true where spam=false and resolved=false";
+	int updates = sql:execute(query);
+	Mez:alert("alert.tickets_marked_as_spam");
+	return DSL_VIEWS.Support;
+}

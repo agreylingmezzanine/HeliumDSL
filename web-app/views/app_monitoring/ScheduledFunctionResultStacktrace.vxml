@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.scheduled_function_result_stack_trace" unit="ScheduledFunctionResult">
+		<action label="action.back" action="back"/>
+
+		<info label="info.stack_trace">
+			<binding variable="scheduledFunctionResult">
+				<attribute name="stackTrace"/>
+			</binding>
+		</info>
+	</view>
+</ui>
+

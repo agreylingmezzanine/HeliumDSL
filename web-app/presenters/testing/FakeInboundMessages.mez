@@ -1,0 +1,20 @@
+unit FakeInboundMessages;
+
+string senderNumber;
+string messageContent;
+
+DSL_VIEWS sendInboundMessage() {
+	if(senderNumber == null) {
+		Mez:alertError("alert_error.no_inbound_message_content");
+		return null;
+	}   
+
+	if(messageContent == null) {
+		Mez:alertError("alert_error.no_inbound_message_sender");
+		return null;
+	}   
+
+	Support:receiveSms(senderNumber, messageContent);
+	Mez:alert("alert.simulated_inbound_sms_received");
+	return null;
+}

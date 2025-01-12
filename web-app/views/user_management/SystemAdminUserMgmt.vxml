@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.system_admin_user_management" unit="SystemAdminUserMgmt" init="init">
+		
+		<action label="action.back" action="backToUserMgmtMenu"/>
+
+		<!-- The datatype attribute is just a hint and won't disallow certain values.
+			  The default is "text", so below usage actually does nothing. -->
+		<textfield label="textfield.first_name" datatype="text">
+			<binding variable="formSystemAdmin">
+				<attribute name="firstName"/>
+			</binding>
+		</textfield>
+		<!-- You can also bind to a primitive variable, in which case there is no
+			  "attribute" child element, just <binding [...] /> -->
+
+		<textfield label="textfield.last_name">
+			<binding variable="formSystemAdmin">
+				<attribute name="lastName"/>
+			</binding>
+		</textfield>
+
+		<textfield label="textfield.email_address">
+			<binding variable="formSystemAdmin">
+				<attribute name="emailAddress"/>
+			</binding>
+		</textfield>
+
+		<textfield label="textfield.mobile_number" >
+			<binding variable="formSystemAdmin">
+				<attribute name="mobileNumber"/>
+			</binding>
+		</textfield>
+
+		<select label="select.custom_role_name"> 
+			<binding variable="formSystemAdmin">
+				<attribute name="roleName"/>
+			</binding>
+			<enum>EN_SYSTEM_ADMIN_ROLE_NAME</enum>
+		</select>
+
+		<submit label="submit.save" action="saveUser"/>
+
+		<!-- Place multiple attributeName tags under a single column tag to have helium concatenate the values, separated by spaces -->
+		<table title="table_title.system_admins" csvExport="disabled">
+			<collectionSource variable="systemAdmins"/>
+			<column heading="column_heading.name">
+				<attributeName>firstName</attributeName>
+				<attributeName>lastName</attributeName>
+			</column>
+			<rowAction label="button.view" action="viewUser">
+				<binding variable="selectedSystemAdmin" />
+			</rowAction>
+			<rowAction label="button.edit" action="editUser">
+				<binding variable="formSystemAdmin" />
+			</rowAction>
+			<rowAction label="button.remove" action="removeUser">
+				<binding variable="selectedSystemAdmin" />
+				<confirm subject="confirm_subject.removing_user" body="confirm_body.removing_user" />
+			</rowAction>
+		</table>
+		<!-- rowAction's "binding variable" child element specifies which variable
+			  is to be assigned the selected object. It's "action" attribute
+			  specifies a function to be executed when clicking the button. -->
+
+	</view>
+
+</ui>

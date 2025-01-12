@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.farmer_profile_documentation" unit="FarmerProfile" init="init">
+	
+		<action label="action.back" action="backToMenu"/>
+		
+		<!-- certifcate id is stored in intermediate unit variable to allow manual validation and converstion to uuid -->
+		<textfield label="textfield.government_assistance_recipient_certificate_id">
+			<binding variable="certificateId"/>
+		</textfield>
+		
+		<fileupload label="fileupload.government_assistance_recipient_certificate">
+			<binding variable="farmer">
+				<attribute name="governmentAssistanceCertificate"/>
+			</binding>
+		</fileupload>
+		
+		<submit label="submit.save" action="saveGovernmentAssistanceCertificate"/>
+		
+		<!-- once file has been uploaded display the certificate id a file browser and a button to delete the uploaded file -->
+		<info label="info.government_assistance_recipient_certificate_id">
+			<visible function="showFileBrowser"/>
+			<binding variable="farmer">
+				<attribute name="governmentAssistanceCertificateId"/>
+			</binding>
+		</info>
+		
+		<filebrowser dataAttribute="governmentAssistanceCertificate">
+			<visible function="showFileBrowser"/>
+			<collectionSource function="getCurrentFarmerAsCollection"/>
+		</filebrowser>
+		
+		<button label="button.deleted_government_assistance_recipient_certificate" action="deleteGovernmentAssistanceCertificate">
+			<visible function="showFileBrowser"/>
+		</button>
+	</view>
+</ui>

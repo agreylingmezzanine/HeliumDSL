@@ -1,0 +1,73 @@
+unit PriceComparison;
+
+Stock[] allStock;
+Stock selectedStock;
+date selectedDate;
+decimal yearlyInflation;
+
+void init(){
+	allStock = getAllStock();	
+	if (allStock.length() > 0) {
+		allStock.sortAsc("name");
+		selectedStock = allStock.get(0);
+	}
+	selectedDate = Date:today();
+	yearlyInflation = 6.02;
+}
+
+Stock[] getAllStock() {
+	return Stock:equals(deleted, false);
+}
+
+Shop[] getAllShops() {
+	return Shop:equals(deleted, false);
+}
+
+PriceEstimate[] getEstimates() {
+	PriceEstimate[] result;
+	Shop[] shops = getAllShops();
+	for (int i = 0; i < shops.length(); i++) {
+		Shop currentShop = shops.get(i);
+		StockUpdate lastUpdate = getLastUpdate(currentShop);
+		if (lastUpdate != null) {
+			PriceEstimate estimate = PriceEstimate:new();
+			estimate.shopName = currentShop.name;
+			estimate.lastUpdatedDate = lastUpdate.stocktakeDate;
+			estimate.lastUpdatedPrice = lastUpdate.price;
+
+			int durationDays = Date:daysBetween(lastUpdate.stocktakeDate, selectedDate);
+			estimate.estimatedPrice = getEstimatedPrice(lastUpdate, durationDays);	
+			result.append(estimate);
+		}
+	}
+
+	return result;
+}
+
+DSL_VIEWS refresh() {
+	return null;
+}
+
+StockUpdate getLastUpdate(Shop currentShop) {
+	StockUpdate[] updates = StockUpdate:and(
+			relationshipIn(shop, currentShop),
+			relationshipIn(stock, selectedStock));
+	if (updates.length() > 0) {
+		updates.sortDesc("stocktakeDate");
+		return updates.get(0);
+	} else {
+		return null;
+	}
+}
+
+//The formula for the inflated value S after t years is:
+//S=C(1+r)^t , where C=last given price, r=inflation rate percentage
+decimal getEstimatedPrice(StockUpdate lastUpdate, int durationDays) {
+	decimal d = durationDays; //convert to decimal to not have the result
+									  //rounded off before assigning to t
+	decimal t = d/365;
+	decimal r = yearlyInflation/100;
+	decimal latestPrice  = lastUpdate.price;
+	return latestPrice * Math:pow(1+r, t);
+}
+

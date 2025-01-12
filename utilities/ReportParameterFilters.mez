@@ -1,0 +1,21 @@
+unit ReportParameterFilters;
+
+date startDate;
+date endDate;
+
+void setStartDate(date startDateParam) {
+	startDate = startDateParam;
+}
+
+void setEndDate(date endDateParam) {
+	endDate = endDateParam;
+}
+
+Shop[] shopFilter() {
+	FarmerPurchase[] purchases = FarmerPurchase:and(
+		lessThanOrEqual(purchasedOn, endDate),
+		greaterThan(purchasedOn, startDate)
+	);
+	
+	return Shop:relationshipIn(purchases, purchases);
+}

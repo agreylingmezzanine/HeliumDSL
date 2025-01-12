@@ -1,0 +1,22 @@
+unit UserInvite;
+
+// The @InviteUser annotation shows that this function is used as an invite function
+// Invite functions are only called when inviting a user from the Helium core app or when deploying a new snapshot
+@InviteUser
+SystemAdmin inviteSystemAdmin() {
+	
+	// Use the new keyword to initialize a new SystemAdmin object and assign it to a variable
+	SystemAdmin systemAdmin = SystemAdmin:new();
+	
+	// Hard coded values represents a user that will be used during development and testing
+	// For other System Admin users these values will be captured through a form
+	systemAdmin.firstName = "Test";
+	systemAdmin.lastName = "User";
+	systemAdmin.mobileNumber = "278212345678";
+	systemAdmin.emailAddress = "user@domain.com";
+	systemAdmin.deleted = false;
+	systemAdmin.roleName = EN_SYSTEM_ADMIN_ROLE_NAME.System_Admin;
+	
+	// Return the new System Admin
+	return systemAdmin;
+}

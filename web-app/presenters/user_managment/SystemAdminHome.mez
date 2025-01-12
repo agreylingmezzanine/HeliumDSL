@@ -1,0 +1,30 @@
+// The start of a unit
+// All functions and variables must be contained inside a unit
+unit SystemAdminHome;
+
+// Unit variables and functions can be referenced in their own unit using their name
+// When referencing unit variables and functions from another unit the fully qualified name needs to be used for example SystemAdminHome:firstName
+// When referencing unit variables and functions from views that bind to that unit their names can be used 
+// When referencing unit variables and functions from views that do not bind to that unit, their fully qualified name must be used for example SystemAdminhome:firstName
+SystemAdmin currentSystemAdminUser;
+string firstName;
+string lastName;
+
+// Init functions can be bound to views in order for the function to execute every time the view is loaded
+// Init functions must have no parameters and a return type of void
+// Any name can be used for init functions although using "init" in the name is a useful convention
+void init() {
+	currentSystemAdminUser = SystemAdmin:user();
+	firstName = currentSystemAdminUser.firstName;
+	lastName = currentSystemAdminUser.lastName;
+}
+
+// Return the mobile number of the current System Admin user 
+string getSystemAdminMobileNumber() {
+	return currentSystemAdminUser.mobileNumber;
+}
+
+// Return the email address of the current System Admin user
+string getSystemAdminEmailAddress() {
+	return currentSystemAdminUser.emailAddress;
+}

@@ -1,0 +1,17 @@
+persistent object StockUpdate {
+	//stockName is redundant i.t.o. linking a stock, because
+	//we have the 'stock' relationship for that, but we
+	//need a field to match on a column in the uploaded CSV
+   string stockName;
+
+	int level;
+	decimal price;
+	date stocktakeDate;
+
+	@ManyToOne
+	Shop shop via stockUpdates;
+
+	@ManyToOne
+	Stock stock via stockUpdate;
+} 
+

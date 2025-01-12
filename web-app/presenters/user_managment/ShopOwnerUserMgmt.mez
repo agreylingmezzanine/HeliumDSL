@@ -1,0 +1,57 @@
+unit ShopOwnerUserMgmt;
+
+ShopOwner shopOwner;
+bool editing;
+
+void init() {
+	shopOwner = ShopOwner:new();
+	editing = false;
+}
+
+DSL_VIEWS viewUser() {
+	return DSL_VIEWS.ShopOwnerDetails;
+}
+
+DSL_VIEWS back() {
+	return DSL_VIEWS.ShopOwnerUserMgmt;
+}
+
+DSL_VIEWS backToUserMgmtMenu() {
+	return DSL_VIEWS.UserMgmtMenu;
+}
+
+ShopOwner[] getShopOwners() {
+	return ShopOwner:equals(deleted, false);
+}
+
+DSL_VIEWS saveUser() {
+	shopOwner.deleted = false;
+	shopOwner.save();
+	if (editing == false) {
+		shopOwner.invite(shopOwner.mobileNumber);
+	}
+	
+	init();
+	return null;
+}
+
+DSL_VIEWS editUser() {
+	editing = true;
+	return null;
+}
+
+DSL_VIEWS removeUser() {
+	if (shopOwner == ShopOwner:user()) {
+		Mez:alertError("alert.currently_logged_in");
+	} else {
+		shopOwner.deleted = true;
+		shopOwner.removeRole();
+	}
+	init();
+	return null;
+}
+
+
+Shop[] getShopOwnerShops() {
+	return shopOwner.shops;
+}

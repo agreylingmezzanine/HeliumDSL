@@ -1,0 +1,11 @@
+unit CustomRoleName;
+
+@RoleName
+string getSystemAdminRoleName(SystemAdmin systemAdmin) {
+	if (systemAdmin.roleName == EN_SYSTEM_ADMIN_ROLE_NAME.System_Admin) {
+		return "System Admin";
+	} else {
+		return "Programme Manager";
+	}
+}
+

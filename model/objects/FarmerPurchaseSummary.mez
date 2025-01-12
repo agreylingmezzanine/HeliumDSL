@@ -1,0 +1,29 @@
+persistent object FarmerPurchaseSummary{
+	
+	// When was the purchase made
+	datetime purchasedOn;
+	
+	// Quantity and cost of purchase
+	int quantity;
+	decimal unitPrice;
+	decimal goodsCost;
+	decimal discount;
+	int finalCost;
+	
+	// Helium provided payment status and id
+	datetime paymentStatusUpdatedOn;
+	PAYMENT_STATUS paymentStatus;
+	uuid paymentId;
+	
+	// Stock details
+	string stockName;
+	string stockType;
+	
+	// Farmer details
+	string farmerNames;
+	string farmerMobileNumber;
+	
+	// Shop details
+	string shopCode;
+	string shopName;
+}

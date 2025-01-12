@@ -1,0 +1,24 @@
+unit PaymentCallbacks;
+
+@OnPaymentUpdate
+void paymentUpdate(uuid id, PAYMENT_STATUS status, string message){
+	
+	// Find the associated purchase based on the internal Helium payment ID
+	// Ids should be unique so we are only expecting one purchase in the resulting collection
+	FarmerPurchase[] farmerPurchases = FarmerPurchase:equals(paymentId, id);
+	
+	if(farmerPurchases.length() >= 0) {
+		FarmerPurchase farmerPurchase = farmerPurchases.first();
+		
+		// Update the payment status maintained on the farmer purchase
+		farmerPurchase.paymentStatus = status;
+		
+		// Record the time stamp of the update
+		farmerPurchase.paymentStatusUpdatedOn = Mez:now();
+	}
+}
+
+/* @OnPaymentUpdate
+void paymentUpdateWithRef(uuid id, string reference, PAYMENT_STATUS status, string message){
+
+} */

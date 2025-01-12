@@ -1,0 +1,45 @@
+<div>
+    <p id="data_par"></p>
+    <script type="text/javascript">
+        
+        var baseUrl = '/web-api/services/app/exec/static/';
+        var hsid = '?hsid=' + ${hsid};
+        var jsUrl = baseUrl + 'shopowner_dashboard.js' + hsid;
+        var cssUrl = baseUrl + 'shopowner_dashboard.css' + hsid;
+        $.ajax({
+            url: jsUrl,
+            dataType: 'json',
+            cache: false,
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Failed to load JS resource: " + jsUrl + " with result: " + textStatus);
+                console.log(errorThrown);
+            },
+            success: function (data, textStatus, jqXHR) {
+                // Decode result and execute JS
+                eval(window.atob(data.data));
+            }
+        });
+    
+        // Load CSS
+        $.ajax({
+            url: cssUrl,
+            dataType: 'json',
+            cache: false,
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Failed to load CSS resource: " + cssUrl + " with result: " + textStatus);
+                console.log(errorThrown);
+            },
+            success: function (data, textStatus, jqXHR) {
+                // Decode result and include styles
+                $('head').append('<style type="text/css">' + window.atob(data.data) + '</style>');
+            }
+        });
+    
+    </script>
+    
+    <div class="grid-container">
+        <div id="salesValuePerStockItem">1</div>
+        <div id="salesQuatityPerStockItem">2</div>
+        <div id="purchasesPerFarmer">3</div>
+    </div>
+</div>

@@ -1,0 +1,81 @@
+unit ScheduledMessaging;
+
+@Scheduled("0 8 * * 0")
+@Scheduled("* * * * *")
+void sendFarmerStockNotificationMessages() {
+	
+	// Get farmers that have not been deleted and have signed up for either SMS or email notifications
+	Farmer[] farmers = Farmer:union(
+		and(
+			equals(deleted, false),
+			equals(smsMessaging, true)
+		),
+		and(
+			equals(deleted, false),
+			equals(emailMessaging, true)
+		)
+	);
+	
+	// Loop over farmers that are eligible for messages
+	for(int i = 0; i < farmers.length(); i++) {
+		Farmer farmer = farmers.get(i);
+		
+		// Get the stock updates for shops that the farmer is interested in
+		StockUpdate[] stockUpdates = StockUpdate:relationshipIn(shop, farmer.messagingShops);
+		
+		// For each farmer crop type filter the stock updates by this, get the latest update and message the farmer
+		for(int j = 0; j < farmer.cropTypes.length(); j++) {
+			
+			Stock currentCropType = farmer.cropTypes.get(j);
+			StockUpdate[] cropSpecificUpdates = stockUpdates.select(
+				relationshipIn(stock, currentCropType)
+			);
+			
+			cropSpecificUpdates.sortDesc("stocktakeDate");
+			messageFarmer(farmer, cropSpecificUpdates.first());
+		}
+	}
+}
+
+// Determine which messages should be sent and invoke the appropriate helper
+void messageFarmer(Farmer farmer, StockUpdate stockUpdate) {
+	if(farmer.smsMessaging == true) {
+		smsFarmer(farmer, stockUpdate);
+	}
+	
+	if(farmer.emailMessaging == true) {
+		emailFarmer(farmer, stockUpdate);
+	}
+}
+
+// Helper function to SMS stock level to farmer
+void smsFarmer(Farmer farmer, StockUpdate stockUpdate) {
+	
+	Shop shop = stockUpdate.shop;
+	string messageContent = Strings:concat("Stock level for '", stockUpdate.stockName ,"' at shop '", shop.name,"': ", stockUpdate.level);
+	
+	FarmerStockNotificationSms notificationSms = FarmerStockNotificationSms:new();
+	notificationSms.sentOn = Mez:now();
+	notificationSms.stockUpdate = stockUpdate;
+	notificationSms.farmer = farmer;
+	notificationSms.messageContent = messageContent;
+	notificationSms.save();
+	
+	Mez:sms(farmer, "mobileNumber", "messaging.sms.message_content");
+}
+
+// Helper function to e-mail stock level to farmer
+void emailFarmer(Farmer farmer, StockUpdate stockUpdate) {
+	
+	Shop shop = stockUpdate.shop;
+	string messageContent = Strings:concat("Stock level for '", stockUpdate.stockName ,"' at shop '", shop.name,"': ", stockUpdate.level);
+	
+	FarmerStockNotificationEmail notificationEmail = FarmerStockNotificationEmail:new();
+	notificationEmail.sentOn = Mez:now();
+	notificationEmail.stockUpdate = stockUpdate;
+	notificationEmail.farmer = farmer;
+	notificationEmail.messageContent = messageContent;
+	notificationEmail.save();
+	
+	Mez:email(farmer, "messaging.email.stock_level_description", "messaging.email.stock_level_subject", "messaging.email.stock_level_body");
+}

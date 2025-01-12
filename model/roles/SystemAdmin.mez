@@ -1,0 +1,26 @@
+// The @Role annotation indicates that this object is associated with a user role
+// The name specified for the user role does not necessarily have to correspond to the object name although it is recommended 
+@Role("System Admin")
+
+// Object we will be using to keep track of users with System Admin roles in our app
+// Persistent keyword means it will be saved to a database instead of just in memory
+// Objects with the @Role annotation must be persistent
+persistent object SystemAdmin {
+	
+	// Attributes of the System Admin we want to keep track of
+	// All attributes for this object are of type string meaning they will be stored a string of characters
+	@requiredFieldValidator("validator.required_field")
+	string firstName;
+
+	@requiredFieldValidator("validator.required_field")
+	string lastName;
+
+	@requiredFieldValidator("validator.required_field")
+	string mobileNumber;
+
+	string emailAddress;
+	
+	EN_SYSTEM_ADMIN_ROLE_NAME roleName;
+
+	bool deleted;
+}

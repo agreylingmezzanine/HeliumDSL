@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.farmer_user_management" unit="FarmerUserMgmt" init="init">
+		
+		<action label="action.back" action="backToUserMgmtMenu"/>
+
+		<textfield label="textfield.first_name">
+			<binding variable="farmer">
+				<attribute name="firstName"/>
+			</binding>
+		</textfield>
+		
+		<textfield label="textfield.last_name">
+			<binding variable="farmer">
+				<attribute name="lastName"/>
+			</binding>
+		</textfield>
+		
+		<textfield label="textfield.mobile_number">
+			<binding variable="farmer">
+				<attribute name="mobileNumber"/>
+			</binding>
+		</textfield>
+		
+		<textfield label="textfield.email_address">
+			<binding variable="farmer">
+				<attribute name="emailAddress"/>
+			</binding>
+		</textfield>
+		
+		<textarea label="textarea.farm_address">
+			<binding variable="farmer">
+				<attribute name="farmAddress"/>
+			</binding>
+		</textarea>
+		
+		<textfield label="textfield.farm_size">
+			<binding variable="farmer">
+				<attribute name="farmSize"/>
+			</binding>
+		</textfield>
+		
+		<textfield label="textfield.longitude">
+			<binding variable="farmer">
+				<attribute name="longitude"/>
+			</binding>
+		</textfield>
+		
+		<textfield label="textfield.latitude">
+			<binding variable="farmer">
+				<attribute name="latitude"/>
+			</binding>
+		</textfield>
+		
+		<select label="select.state">
+			<binding variable="farmer">
+				<attribute name="state"/>
+			</binding>
+			<enum>STATES</enum>
+		</select>
+		
+		<datefield label="datefield.last_shop_visit">
+			<binding variable="farmer">
+				<attribute name="lastShopVisit"/>
+			</binding>
+		</datefield>
+
+		<submit label="submit.save" action="saveUser"/>
+		
+		<table title="table_title.farmers">
+			<collectionSource function="getFarmers"/>
+			<column heading="column_heading.registered_on">
+				<attributeName>registeredOn</attributeName>
+			</column>
+			<column heading="column_heading.first_name">
+				<attributeName>firstName</attributeName>
+			</column>
+			<column heading="column_heading.last_name">
+				<attributeName>lastName</attributeName>
+			</column>
+			<column heading="column_heading.mobile_number">
+				<attributeName>mobileNumber</attributeName>
+			</column>
+			<column heading="column_heading.email_address">
+				<attributeName>emailAddress</attributeName>
+			</column>
+			<column heading="column_heading.farm_address">
+				<attributeName>farmAddress</attributeName>
+				<visible variable="showFarmerDetailInTable"/>
+			</column>
+			<column heading="column_heading.farm_size">
+				<attributeName>farmSize</attributeName>
+				<visible variable="showFarmerDetailInTable"/>
+			</column>
+			<column heading="column_heading.longitude">
+				<attributeName>longitude</attributeName>
+				<visible variable="showFarmerDetailInTable"/>
+			</column>
+			<column heading="column_heading.latitude">
+				<attributeName>latitude</attributeName>
+				<visible variable="showFarmerDetailInTable"/>
+			</column>
+			<column heading="column_heading.state">
+				<attributeName>state</attributeName>
+				<visible variable="showFarmerDetailInTable"/>
+			</column>
+			
+			<rowAction label="button.view" action="viewUser">
+				<binding variable="farmer" />
+			</rowAction>
+			<rowAction label="button.edit" action="editUser">
+				<binding variable="farmer" />
+			</rowAction>
+			<rowAction label="button.remove" action="removeUser">
+				<binding variable="farmer" />
+				<confirm subject="confirm_subject.removing_user" body="confirm_body.removing_user" />
+			</rowAction>
+		</table>
+		
+		<button label="button.fat_table_slim_table" action="toggleShowFarmerDetailsInTable"/>
+	</view>
+</ui>

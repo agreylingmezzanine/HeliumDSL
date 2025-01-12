@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.historic_purchases" unit="FarmerPurchases">
+	
+		<action label="action.new_purchase" action="newPurchase"/>
+	
+		<table>
+			<collectionSource function="getFarmerUserPurchases"/>
+			<column heading="column_heading.purchased_on">
+				<attributeName>purchasedOn</attributeName>
+			</column>
+			<column heading="column_heading.payment_status">
+				<attributeName>paymentStatus</attributeName>
+			</column>
+			<column heading="column_heading.payment_status_updated_on">
+				<attributeName>paymentStatusUpdatedOn</attributeName>
+			</column>
+			<column heading="column_heading.item">
+				<attributeName>stock.name</attributeName>
+			</column>
+			<column heading="column_heading.quantity">
+				<attributeName>quantity</attributeName>
+			</column>
+			<column heading="column_heading.unit_price">
+				<attributeName>unitPrice</attributeName>
+			</column>
+			<column heading="column_heading.goods_cost">
+				<attributeName>goodsCost</attributeName>
+			</column>
+			<column heading="column_heading.discount">
+				<attributeName>discount</attributeName>
+			</column>
+			<column heading="column_heading.final_cost">
+				<attributeName>finalCost</attributeName>
+			</column>
+		</table>		
+	</view>
+</ui>

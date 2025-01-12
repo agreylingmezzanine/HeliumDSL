@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.purchases_dashboard" unit="PurchasesReports" init="init">
+            
+		<menuitem label="menu_item.purchases" icon="Admin">
+			<userRole>Shop Owner</userRole>
+		</menuitem>
+                
+                <action label="action.purchase_frequency" action="navigateToPurchaseFrequency" />
+
+		<static source="shopowner_dashboard.html"/>
+	</view>
+</ui>

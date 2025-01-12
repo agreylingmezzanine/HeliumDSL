@@ -1,0 +1,58 @@
+unit SmsResultCallbacks;
+
+@OnSmsResultUpdate
+void smsResultCallback(__sms_result__ smsResult) {
+	
+	// Get or create the counter even if we don't know whether there has been a failure yet
+	SmsFailureCounter failureCounter = getOrCreateSmsFailureCounter();
+	
+	
+	// If a failure has occurred, record it
+	if(smsResult.success == false && smsResult.doneProcessing == true) {
+		failureCounter.consecutiveFailures = failureCounter.consecutiveFailures + 1;
+		failureCounter.totalFailures = failureCounter.totalFailures + 1;
+		failureCounter.lastUpdate = Mez:now();
+	}
+	// Reset the consecutive failure count
+	else if(smsResult.success == true && smsResult.doneProcessing == true) {
+		failureCounter.consecutiveFailures = 0;
+		failureCounter.totalSuccesses = failureCounter.totalSuccesses + 1;
+		failureCounter.lastUpdate = Mez:now();
+	}
+	
+	// Alert all system admins of consecutive failures
+	if(failureCounter.consecutiveFailures >= 5) {
+		notifySystemAdminsOfConsecutiveFailures(failureCounter.consecutiveFailures);
+	}
+}
+
+SmsFailureCounter getOrCreateSmsFailureCounter() {
+	SmsFailureCounter[] failureCounters = SmsFailureCounter:all();
+	SmsFailureCounter failureCounter;
+	
+	// No counter, create one
+	if(failureCounters.length() == 0) {
+		failureCounter = SmsFailureCounter:new();
+		failureCounter.consecutiveFailures = 0;
+		failureCounter.totalFailures = 0;
+		failureCounter.totalSuccesses = 0;
+		failureCounter.save();
+		return failureCounter;
+	}
+	else {
+		return failureCounters.get(0);
+	}
+}
+
+void notifySystemAdminsOfConsecutiveFailures(int consecutiveCount) {
+	SystemAdmin[] systemAdmins = SystemAdmin:equals(deleted, false);
+	for(int i = 0; i < systemAdmins.length(); i++) {
+		SystemAdmin currentSystemAdmin = systemAdmins.get(i);
+		Mez:email(
+			currentSystemAdmin.emailAddress, 
+			"messaging.email.consecutive_sms_failure_description", 
+			"messaging.email.consecutive_sms_failure_subject", 
+			"messaging.email.consecutive_sms_failure_body"
+		);
+	}
+}

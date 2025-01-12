@@ -1,0 +1,9 @@
+unit SmsResult;
+
+__sms_result__[] getSmsResults() {
+	return __sms_result__:all();
+}
+
+DSL_VIEWS backToMenu() {
+	return DSL_VIEWS.AppMonitoringMenu;
+}

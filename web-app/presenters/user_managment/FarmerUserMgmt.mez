@@ -1,0 +1,79 @@
+unit FarmerUserMgmt;
+
+Farmer farmer;
+Stock cropType;
+
+bool editing;
+bool showFarmerDetailInTable;
+string tableLable;
+
+void init() {
+	farmer = Farmer:new();
+	editing = false;
+	showFarmerDetailInTable = false;
+	tableLable = "Fat table";
+}
+
+DSL_VIEWS viewUser() {
+	return DSL_VIEWS.FarmerUserDetails;
+}
+
+DSL_VIEWS back() {
+	return DSL_VIEWS.FarmerUserMgmt;
+}
+
+DSL_VIEWS backToUserMgmtMenu() {
+	return DSL_VIEWS.UserMgmtMenu;
+}
+
+DSL_VIEWS saveUser() {
+	farmer.deleted = false;
+	farmer.save();
+	if (editing == false) {
+		farmer.registeredOn = Mez:now();
+		farmer.invite(farmer.mobileNumber);
+	}
+	else {
+		farmer.updatedOn = Mez:now();
+	}
+	
+	init();
+	return null;
+}
+
+DSL_VIEWS editUser() {
+	editing = true;
+	return null;
+}
+
+DSL_VIEWS removeUser() {
+	if (farmer == Farmer:user()) {
+		Mez:alertError("alert.currently_logged_in");
+	} else {
+		farmer.deleted = true;
+		farmer.removeRole();
+	}
+	init();
+	return null;
+}
+
+Farmer[] getFarmers() {
+	return Farmer:equals(deleted, false);
+}
+
+// View or hide farmer table details
+string toggleShowFarmerDetailsInTable() {
+	if(showFarmerDetailInTable == false) {
+		showFarmerDetailInTable = true;
+		tableLable = "Slim table";
+	}
+	else{
+		showFarmerDetailInTable = false;
+		tableLable = "Fat table";
+	}
+	return null;
+}
+
+Stock[] getFarmerCropTypes() {
+	return farmer.cropTypes;
+}

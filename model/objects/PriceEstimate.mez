@@ -1,0 +1,7 @@
+object PriceEstimate {
+	string shopName;
+	date lastUpdatedDate;
+	decimal lastUpdatedPrice;
+	decimal estimatedPrice;
+}
+

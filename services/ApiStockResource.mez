@@ -1,0 +1,112 @@
+unit ApiStockResource;
+
+@POST("v1/stock/stockupdate")
+ApiResponse postStockUpdate(StockUpdate stockUpdate) {
+    
+    // initiate the response
+    ApiResponse response = ApiResponse:new();
+    response.requestReceived = Mez:now();
+
+    // validate and persist
+    ApiResponse updatedResponse = persistStockUpdate(stockUpdate, response);
+    if(updatedResponse.success == false) {
+        return updatedResponse;
+    }
+
+    // return the result
+    updatedResponse.requestProcessed = Mez:now();
+    return updatedResponse;
+}
+
+// Example curl call for posting a single stock update
+/*
+curl -u 'user:pass' \
+-H "Content-Type: application/json" \
+-X POST "https://dev.mezzanineware.com/rest/mezzanine-tut-lesson-25/v1/stock/stockupdate" \
+-d '{  
+  "_id":"fb94f312-2f99-4d40-889a-414d4b09f1bb",
+  "level":200,
+  "price":100,
+  "stocktakeDate":1522326277000,
+  "shop":"2dc1d70b-2ae1-4bcc-88b7-93df2bcbfae1",
+  "stock":"13643236-d7aa-4277-9582-9ed60325872f"
+}'
+*/
+
+@POST("v1/stock/stockupdates")
+ApiResponse postStockUpdates(StockUpdate[] stockUpdates) {
+
+    // initiate the response
+    ApiResponse response = ApiResponse:new();
+    response.requestReceived = Mez:now();
+
+    // for each stock update validate and persist
+    ApiResponse updatedResponse;
+    foreach(StockUpdate stockUpdate: stockUpdates) {
+        updatedResponse = persistStockUpdate(stockUpdate, response);
+        if(updatedResponse.success == false) {
+            return updatedResponse;
+        }
+    }
+
+    // return the result
+    updatedResponse.requestProcessed = Mez:now();
+    return updatedResponse;
+}
+
+// Example curl call for posting multiple stock updates
+/*
+curl -u 'user:pass' \
+-H "Content-Type: application/json" \
+-X POST "https://dev.mezzanineware.com/rest/mezzanine-tut-lesson-25/v1/stock/stockupdates"
+-d '[  
+  {  
+    "_id":"b54fb253-7f61-4a5a-9ae8-fcf42c495892",
+    "level":200,
+    "price":100,
+    "stocktakeDate":1522326277000,
+    "shop":"4575470d-ee0a-474d-bd5f-1c370c6fc817",
+    "stock":"80dc5655-9600-440b-86c0-614ccaef11fe"
+  },
+  {  
+    "_id":"ae9b5e85-9c7f-4062-9cbd-84060dc2267d",
+    "level":500,
+    "price":160,
+    "stocktakeDate":1522326277000,
+    "shop":"4575470d-ee0a-474d-bd5f-1c370c6fc817",
+    "stock":"d5f7cb6d-69ef-4e01-953d-151d89792155"
+  }
+]'
+*/
+
+ApiResponse persistStockUpdate(StockUpdate stockUpdate, ApiResponse apiResponse) {
+
+    if(stockUpdate.stock == null) {
+        apiResponse.message = "Stock not specified";
+        apiResponse.success = false;
+        return apiResponse;
+    }
+    if(stockUpdate.shop == null) {
+        apiResponse.message = "Shop not specified";
+        apiResponse.success = false;
+        return apiResponse;
+    }
+
+    if(stockUpdate.level == null 
+    || stockUpdate.price == null 
+    || stockUpdate.stocktakeDate == null 
+    || stockUpdate.stock == null 
+    || stockUpdate.shop == null) {
+        apiResponse.message = "Invalid stock update request. Please specify the stock level, current price, stock take date, stock item and shop";
+        apiResponse.success = false;
+        return apiResponse;
+    }
+
+    apiResponse.message = "Success";
+    apiResponse.success = true;
+    Stock stock = stockUpdate.stock;
+    stockUpdate.stockName = stock.name;
+    stockUpdate.save();
+
+    return apiResponse;
+}

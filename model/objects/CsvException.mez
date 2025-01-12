@@ -1,0 +1,5 @@
+object CsvException {
+    string header;
+    string value;
+    string exception;
+}

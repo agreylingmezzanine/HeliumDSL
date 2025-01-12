@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.farmer_profile_crop_types" unit="FarmerProfile" init="init">
+		
+		<action label="action.back" action="backToMenu"/>
+		
+		<info label="info.last_updated">
+			<binding variable="farmer">
+				<attribute name="cropTypeProfileUpdatedOn"/>
+			</binding>
+		</info>
+		
+		<!-- select box to for eligible crop types to link to farmer -->
+		<select label="select.crop_types">
+			<binding variable="cropType"/>
+			<collectionSource function="getEligibleCropTypes">
+				<displayAttribute name="name"/>
+			</collectionSource>
+		</select>
+		
+		<!-- submit button to add selected crop type/stock to farmer -->
+		<submit label="submit.add_crop_type" action="addCropType"/>
+		
+		<!-- button to remove all crop types that are linked to a farmer -->
+		<submit label="button.remove_all_farmer_crop_types" action="removeAllFarmerCropTypes"/>
+		
+		<!-- table to represent the farmer crop types -->
+		<table title="table_title.farmer_crop_types">
+			<collectionSource function="getFarmerCropTypes"/>
+			<column heading="column_heading.name">
+				<attributeName>name</attributeName>
+			</column>
+			<rowAction label="button.remove" action="removeFarmerCropType">
+				<binding variable="cropType"/>
+			</rowAction>
+		</table>
+	</view>
+</ui>

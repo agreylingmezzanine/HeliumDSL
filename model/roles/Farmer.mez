@@ -1,0 +1,62 @@
+@Restrict("System Admin", all())
+@Restrict("Shop Owner", notEquals(state, STATES.Inland))
+@Role("Farmer")
+persistent object Farmer {
+	
+	// Farmer details
+	@requiredFieldValidator("validator.required_field")
+	string firstName;
+	
+	@requiredFieldValidator("validator.required_field")
+	string lastName;
+	
+	@requiredFieldValidator("validator.required_field")
+	string mobileNumber;
+	
+	@requiredFieldValidator("validator.required_field")
+	string emailAddress;
+	
+	// Farm details
+	@requiredFieldValidator("validator.required_field")
+	string farmAddress;
+	
+	@requiredFieldValidator("validator.required_field")
+	decimal farmSize;
+	
+	@requiredFieldValidator("validator.required_field")
+	decimal longitude;
+	
+	@requiredFieldValidator("validator.required_field")
+	decimal latitude;
+	
+	@requiredFieldValidator("validator.required_field")
+	STATES state;
+	
+	// When last did this farmer visit any shop 
+	datetime lastShopVisit;
+	
+	// Attributes for messaging opt-in
+	bool smsMessaging;
+	bool emailMessaging;
+	
+	// Farmer profile documentation related
+	uuid governmentAssistanceCertificateId;
+	blob governmentAssistanceCertificate;
+	
+	// Meta information
+	datetime registeredOn;
+	datetime updatedOn;
+	datetime cropTypeProfileUpdatedOn;
+	datetime messagingProfileUpdatedOn;
+	datetime documentationProfileUpdatedOn;
+    datetime cropQualityPicturesUpdatedOn;
+	bool deleted;
+	
+	// Relationship between farmer and crop types
+	@ManyToMany
+	Stock cropTypes via farmers;
+	
+	// Relationship between farmer and shops for which the farmer would like to receive stock level notifications
+	@ManyToMany
+	Shop messagingShops via notifiedFarmers;
+}

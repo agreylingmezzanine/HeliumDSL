@@ -1,0 +1,122 @@
+unit ShopMgmt;
+
+Shop shop;
+ShopOwner ownerToAdd;
+ShopOwner ownerToRemove;
+bool editing;
+
+// Init function to initialize unit variables
+void init() {
+	shop = Shop:new();
+	ownerToAdd = null;
+	shop.shopCode = generateShopCode();
+	editing = false;
+}
+
+// Helper function to generate random, unique code for shops
+string generateShopCode() {
+	
+	// We use the internal ID that Helium generates as part of our random shop code.
+	// This ID is of type uuid but we can implicitly cast it to a string type by assigning it to a string variable
+	string shopId = shop._id;
+	
+	// For the random shop code we will only use the first part of the Helium generated ID
+	// To do this we use the split command
+	// We could also have used substring
+	string[] idParts = String:split(shopId, "-");
+	
+	// The next part of our random shop code will be generated using the Math random built in function
+	// This function generates a decimal number between 0 and 1
+	// To generate get a 5 digit integer from this we multiply the value and then we make use of Helium's implicit casting to cast the value to an integer
+	int randomNumber = Math:random() * 100000;
+
+	// Final part is to concatenate the different string parts using the concat built in function
+	return String:concat(idParts.get(0), "-" ,randomNumber);
+}
+
+// Collection source for data table
+Shop[] getShops() {
+	return Shop:equals(deleted, false);
+}
+
+DSL_VIEWS saveShop() {
+
+	if (editing == true) {
+		// When editing we record the current time
+		// Saving on submit is implied for objects already in the database
+		shop.updatedOn = Mez:now();
+	}
+	else {
+		// When saving for the first time we record the current time
+		shop.createdOn = Mez:now();
+		
+		// Flag the object as not deleted
+		shop.deleted = false;
+		
+		// When submitting an object for the first time with the intention of saving it to the database we need to use the save built in function
+		shop.save();
+	}
+	
+	// Re initialize the sate of all the unit variables
+	init();
+	
+	// Stay on the same view
+	return null;
+}
+
+// Callback for view row action
+DSL_VIEWS viewShop() {
+	return DSL_VIEWS.ShopDetails;
+}
+
+// Navigation back to the shop management view from the shop details view
+DSL_VIEWS back() {
+	return DSL_VIEWS.ShopMgmt;
+}
+
+// Navigation back to the entity management menu
+DSL_VIEWS backToEntityMgmtMenu() {
+	return DSL_VIEWS.EntityMgmtMenu;
+}
+
+// Callback for edit row action
+DSL_VIEWS editShop() {
+	editing = true;
+	return null;
+}
+
+// Callback for delete row action
+DSL_VIEWS deleteShop() {
+	shop.deleted = true;
+	init();
+	return null;
+}
+
+// Return all shop owners in the system
+ShopOwner[] getAllShopOwners() {
+	return ShopOwner:equals(deleted, false);
+}
+
+// Return the shop owners that are linked to the current shop
+ShopOwner[] getCurrentShopOwners() {
+	return shop.owners;
+}
+
+// Set a shop owner as an owner for the current shop
+string addShopOwner() {
+	shop.owners.append(ownerToAdd);
+	ownerToAdd = null;
+	return null;
+}
+
+// Remove a shop owner as an owner from current shop
+string removeShopOwner() {
+	ShopOwner[] shopOwners = getAllShopOwners();
+	for(int i = 0; i < shopOwners.length(); i++) {
+		ShopOwner currentShopOwner = shopOwners.get(i);
+		if(ownerToRemove._id == currentShopOwner._id) {
+			shop.owners.remove(i);
+		}
+	}
+	return null;
+}

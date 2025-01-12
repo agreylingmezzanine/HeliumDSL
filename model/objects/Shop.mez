@@ -1,0 +1,33 @@
+persistent object Shop {
+	
+	// Basic shop information
+	string shopCode;
+	
+	@requiredFieldValidator("validator.required_field")
+	string name;
+	
+	@requiredFieldValidator("validator.required_field")
+	string description;
+
+	// Attributes relating to the shop location
+	@requiredFieldValidator("validator.required_field")
+	decimal longitude;
+	
+	@requiredFieldValidator("validator.required_field")
+	decimal latitude;
+	
+	@requiredFieldValidator("validator.required_field")
+	STATES state;
+	
+	@requiredFieldValidator("validator.required_field")
+	string mobileNumber;
+	
+	// Meta information
+	datetime createdOn;
+	datetime updatedOn;
+	bool deleted;
+	
+	// Related shop owner
+	@ManyToMany
+	ShopOwner owners via shops;
+}

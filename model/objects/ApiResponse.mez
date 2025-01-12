@@ -1,0 +1,6 @@
+persistent object ApiResponse {
+    datetime requestReceived;
+    datetime requestProcessed;
+    string message;
+    bool success;
+}

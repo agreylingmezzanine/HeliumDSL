@@ -1,0 +1,16 @@
+@Role("Shop Owner")
+persistent object ShopOwner {
+	
+	@requiredFieldValidator("validator.required_field")
+	string firstName;
+
+	@requiredFieldValidator("validator.required_field")
+	string lastName;
+
+	@requiredFieldValidator("validator.required_field")
+	string mobileNumber;
+
+	string emailAddress;
+	
+	bool deleted;
+}

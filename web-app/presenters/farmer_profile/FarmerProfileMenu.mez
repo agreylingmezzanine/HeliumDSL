@@ -1,0 +1,67 @@
+unit FarmerProfileMenu;
+
+// Variable to mind on from 'select' row action
+MenuItem menuItem;
+
+// Menu table collection source
+MenuItem[] menuItems;
+
+// Create the menu items for our menu
+void initMenu() {
+	Farmer currentFarmerUser = Farmer:user();
+	menuItems.clear();
+	
+	// Menu item farmer general profile
+	MenuItem generalProfileMenuItem = createMenuItem(
+		String:translate("menu_item.farmer_profile_general"), 
+		DSL_VIEWS.FarmerProfile,
+		Strings:concat(currentFarmerUser.updatedOn, "")
+	);
+	menuItems.append(generalProfileMenuItem);
+	
+	// Menu item farmer crop types profile
+	MenuItem cropTypeProfileMenuItem = createMenuItem(
+		String:translate("menu_item.farmer_profile_crop_type"), 
+		DSL_VIEWS.FarmerProfileCropTypes,
+		Strings:concat(currentFarmerUser.cropTypeProfileUpdatedOn, "")
+	);
+	menuItems.append(cropTypeProfileMenuItem);
+	
+	// Menu item for farmer messaging profile
+	MenuItem profileMessagingMenuItem = createMenuItem(
+		String:translate("menu_item.farmer_profile_messaging"), 
+		DSL_VIEWS.FarmerProfileMessaging,
+		Strings:concat(currentFarmerUser.messagingProfileUpdatedOn, "")
+	);
+	menuItems.append(profileMessagingMenuItem);
+	
+	// Menu item for farmer documentation profile
+	MenuItem profileDocumentationMenuItem = createMenuItem(
+		String:translate("menu_item.farmer_profile_documentation"), 
+		DSL_VIEWS.FarmerProfileDocumentation,
+		Strings:concat(currentFarmerUser.documentationProfileUpdatedOn, "")
+	);
+	menuItems.append(profileDocumentationMenuItem);
+
+    // Menu item for crop quality pictures
+    MenuItem cropQualityPicturesMenuItem = createMenuItem(
+        String:translate("menu_item.farmer_profile_crop_quality_pictures"),
+        DSL_VIEWS.FarmerProfileCropQualityPictures,
+        String:concat(currentFarmerUser.cropQualityPicturesUpdatedOn, "")
+    );
+	menuItems.append(cropQualityPicturesMenuItem);
+}
+
+// Helper function to create menu item
+MenuItem createMenuItem(string label, DSL_VIEWS navigationDestination, string description) {
+	MenuItem menuItem = MenuItem:new();
+	menuItem.label = label;
+	menuItem.description = description;
+	menuItem.navigationDestination = navigationDestination;
+	return menuItem;
+}
+
+// Navigate to the view associated with the select menu item
+DSL_VIEWS selectMenuItem() {
+	return menuItem.navigationDestination;
+}

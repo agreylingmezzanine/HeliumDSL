@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View View.xsd">
+	
+	<view label="view_heading.shop_details" unit="ShopMgmt">
+
+		<action label="action.back" action="back" />
+		
+		<!-- shop specific details -->
+		<info label="info.created_on">
+			<binding variable="shop">
+				<attribute name="createdOn"/>
+			</binding>
+		</info>
+		
+		<info label="info.updated_on">
+			<binding variable="shop">
+				<attribute name="updatedOn"/>
+			</binding>
+		</info>
+
+		<info label="info.shop_code">
+			<binding variable="shop">
+				<attribute name="shopCode"/>
+			</binding>
+		</info>
+		
+		<info label="info.shop_name">
+			<binding variable="shop">
+				<attribute name="name"/>
+			</binding>
+		</info>
+		
+		<info label="info.shop_description">
+			<binding variable="shop">
+				<attribute name="description"/>
+			</binding>
+		</info>
+		
+		<info label="info.longitude">
+			<binding variable="shop">
+				<attribute name="longitude"/>
+			</binding>
+		</info>
+		
+		<info label="info.latitude">
+			<binding variable="shop">
+				<attribute name="latitude"/>
+			</binding>
+		</info>
+		
+		<info label="info.state">
+			<binding variable="shop">
+				<attribute name="state"/>
+			</binding>
+		</info>
+		
+		<info label="info.mpesa_number">
+			<binding variable="shop">
+				<attribute name="mobileNumber"/>
+			</binding>
+		</info>
+		
+		<!-- table of shop owners -->
+		<table title="table_title.shop_owners">
+			<collectionSource function="getCurrentShopOwners"/>
+			<column heading="column_heading.first_name">
+				<attributeName>firstName</attributeName>
+			</column>
+			<column heading="column_heading.last_name">
+				<attributeName>lastName</attributeName>
+			</column>
+			<column heading="column_heading.mobile_number">
+				<attributeName>mobileNumber</attributeName>
+			</column>
+			<column heading="column_heading.email_address">
+				<attributeName>emailAddress</attributeName>
+			</column>
+		</table>
+	</view>
+</ui>

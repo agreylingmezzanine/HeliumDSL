@@ -1,0 +1,121 @@
+unit ApiPurchaseResource;
+
+// Returns a json object representing the value of purchases per stock item 
+// for the shops related to the specified shop owner
+@GET("v1/purchase/report/product/value")
+json getProductPurchaseValueReport() {
+    
+    // Get the relevant purchases
+    FarmerPurchase[] purchases = getLoggedInShopOwnerPurchases();
+    if(purchases == null) {
+        return null;
+    }
+
+    // Construct the json result
+    json result = "{}";
+    foreach(FarmerPurchase purchase: purchases) {
+        Stock stockItem = purchase.stock;
+        if(stockItem != null) {
+            if(result.jsonGet(stockItem.name) == null) {
+                result.jsonPut(stockItem.name, purchase.finalCost);
+            }
+            
+            if(result.jsonGet(stockItem.name) != null) {
+                int currentPurchaseValue = result.jsonGet(stockItem.name);
+                result.jsonPut(stockItem.name, currentPurchaseValue + purchase.finalCost);
+            }
+        }
+    }
+
+    return result;
+}
+
+// Returns a json object representing the quantity of purchases per stock item 
+// for the shops related to the specified shop owner
+@GET("v1/purchase/report/product/quantity")
+json getProductPurchaseQuantityReport(uuid shopOwnerId) {
+
+    // Get the relevant purchases
+    FarmerPurchase[] purchases = getLoggedInShopOwnerPurchases();
+    if(purchases == null) {
+        return null;
+    }
+
+    // Construct the json result
+    json result = "{}";
+    foreach(FarmerPurchase purchase: purchases) {
+        Stock stockItem = purchase.stock;
+        if(stockItem != null) {
+            if(result.jsonGet(stockItem.name) == null) {
+                result.jsonPut(stockItem.name, purchase.quantity);
+            }
+            
+            if(result.jsonGet(stockItem.name) != null) {
+                int currentPurchaseValue = result.jsonGet(stockItem.name);
+                result.jsonPut(stockItem.name, currentPurchaseValue + purchase.quantity);
+            }
+        }
+    }
+
+    return result;
+}
+
+// Return a json object representing the total value of purchases per farmer
+// for shops belonging to the shop owner
+@GET("v1/purchase/report/farmer/value")
+json getFarerPurchaseValueReport(int numOfFarmers) {
+
+    // Get the relevant purchases
+    FarmerPurchase[] purchases = getLoggedInShopOwnerPurchases();
+    if(purchases == null) {
+        return null;
+    }
+
+    // Construct the json result
+    json result = "{}";
+    foreach(FarmerPurchase purchase: purchases) {
+        Farmer farmer = purchase.farmer;
+        if(farmer != null) {
+            if(result.jsonGet(farmer.mobileNumber) == null) {
+                result.jsonPut(farmer.mobileNumber, purchase.finalCost);
+            }
+            
+            if(result.jsonGet(farmer.mobileNumber) != null) {
+                int currentPurchaseValue = result.jsonGet(farmer.mobileNumber);
+                result.jsonPut(farmer.mobileNumber, currentPurchaseValue + purchase.finalCost);
+            }
+        }
+    }
+
+    return result;
+}
+
+
+// Helper method to get the farmer purchases for all shops related to the currently
+// logged in shop owner
+FarmerPurchase[] getLoggedInShopOwnerPurchases() {
+    
+    // Get the shop owner
+    ShopOwner shopOwner = ShopOwner:user();
+
+    if(shopOwner == null) {
+        return null;
+    }
+
+    // Get the shops linked to the shop owner
+    Shop[] shops = Shop:and(
+        relationshipIn(owners, shopOwner),
+        equals(deleted, false)
+    );
+    if(shops.length() == 0) {
+        return null;
+    }
+    
+    // Get the relevant purchases
+    FarmerPurchase[] purchases = FarmerPurchase:relationshipIn(shop, shops);
+    if(purchases == null || purchases.length() == 0) {
+        return null;
+    }
+
+    return purchases;
+}

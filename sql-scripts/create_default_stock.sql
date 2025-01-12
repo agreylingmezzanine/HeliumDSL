@@ -1,0 +1,10 @@
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('80dc5655-9600-440b-86c0-614ccaef11fe', current_date, 'Corn', 'crop_seed', false) ON CONFLICT DO NOTHING;
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('d5f7cb6d-69ef-4e01-953d-151d89792155', current_date, 'Wheat', 'crop_seed', false) ON CONFLICT DO NOTHING;
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('59edd369-f663-4932-b3a1-2991bc98c5f1', current_date, 'Rice', 'crop_seed', false) ON CONFLICT DO NOTHING;
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('a720ad0f-3026-47f5-8d12-fb24bcbfa93f', current_date, 'Beans', 'crop_seed', false) ON CONFLICT DO NOTHING;
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('28fe02d4-fec2-43ae-add2-91cfb874dd0b', current_date, 'Groundnut', 'crop_seed', false) ON CONFLICT DO NOTHING;
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('61f57a09-f23e-4b42-ba11-fa799f1ea9e8', current_date, 'Cowpea', 'crop_seed', false) ON CONFLICT DO NOTHING;
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('13643236-d7aa-4277-9582-9ed60325872f', current_date, 'A-grade grain fertilizer', 'fertilizer', false) ON CONFLICT DO NOTHING;
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('296a3fae-2147-47e7-99f7-2c8733973e80', current_date, 'B-grade grain fertilizer', 'fertilizer', false) ON CONFLICT DO NOTHING;
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('38e5bee1-20a6-4aeb-bf53-c80e91ef86f4', current_date, 'A-grade legume fertilizer', 'fertilizer', false) ON CONFLICT DO NOTHING;
+INSERT INTO stock (_id_, _tstamp_, name, stocktype, deleted) VALUES ('b0fe8a69-0dac-4717-8a82-69ff0dfd3310', current_date, 'B-grade legume fertilizer', 'fertilizer', false) ON CONFLICT DO NOTHING;

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../View.xsd">
+	<view label="view_heading.scheduled_function_results" unit="ScheduledFunctionResult">
+	
+		<action label="action.back" action="backToMenu"/>
+
+		<table>
+			<collectionSource function="getScheduledFunctionResults"/>
+			<column heading="column_heading.time_started">
+				<attributeName>datetimestampStarted</attributeName>
+			</column>
+			<column heading="column_heading.time_finished">
+				<attributeName>datetimestampFinished</attributeName>
+			</column>
+			<column heading="column_heading.success">
+				<attributeName>success</attributeName>
+			</column>
+			<column heading="column_heading.qualified_name">
+				<attributeName>qualifiedName</attributeName>
+			</column>
+			<column heading="column_heading.schedule">
+				<attributeName>schedule</attributeName>
+			</column>
+			<column heading="column_heading.error">
+				<attributeName>error</attributeName>
+			</column>
+			
+			<rowAction label="button.view_stack_trace" action="viewStackTrace">
+				<binding variable="scheduledFunctionResult"/>
+			</rowAction>
+		</table>
+	</view>
+</ui>
+

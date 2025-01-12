@@ -1,0 +1,37 @@
+unit AppMonitoringMenu;
+
+// Variable to mind on from 'select' row action
+MenuItem menuItem;
+
+// Menu table collection source
+MenuItem[] menuItems;
+
+// Create the menu items for our menu
+void initMenu() {
+	menuItems.clear();
+	
+	MenuItem smsResultMenuItem = createMenuItem(
+		String:translate("menu_item.sms_results"),
+		DSL_VIEWS.SmsResult
+	);
+	menuItems.append(smsResultMenuItem);
+	
+	MenuItem scheduledFunctionResultMenuItem = createMenuItem(
+		String:translate("menu_item.scheduled_function_result"), 
+		DSL_VIEWS.ScheduledFunctionResult
+	);
+	menuItems.append(scheduledFunctionResultMenuItem);
+}
+
+// Helper function to create menu item
+MenuItem createMenuItem(string label, DSL_VIEWS navigationDestination) {
+	MenuItem menuItem = MenuItem:new();
+	menuItem.label = label;
+	menuItem.navigationDestination = navigationDestination;
+	return menuItem;
+}
+
+// Navigate to the view associated with the select menu item
+DSL_VIEWS selectMenuItem() {
+	return menuItem.navigationDestination;
+}

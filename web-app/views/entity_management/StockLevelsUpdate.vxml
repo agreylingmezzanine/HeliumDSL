@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://uiprogram.mezzanine.com/View View.xsd">
+	<view label="view_heading.stock_levels_update" unit="StockLevelsUpdate" init="init">
+
+		<menuitem label="menu_item.stock_levels_update" icon="Shop" order="4">
+			<userRole>Shop Owner</userRole>
+		</menuitem>
+
+		<select label="select.shop">
+			<binding variable="selectedShop" />
+			<collectionSource variable="availableShops">
+				<displayAttribute name="name" />
+			</collectionSource>
+		</select>
+
+		<datefield label="select.date_of_stocktake">
+			<binding variable="selectedDateOfStocktake" />
+		</datefield>
+
+		<fileupload label="fileupload.stock_update_CSV">
+			<binding variable="fileUpload">
+				<attribute name="data" />
+			</binding>
+		</fileupload>
+
+		<submit label="submit.save" action="saveStockUpdate"/>
+		
+		<table>
+		    <visible variable="showExceptions"/>
+		    <collectionSource variable="unprocessedItems"/>
+		    
+		    <column heading="column_heading.header">
+			<attributeName>header</attributeName>
+		    </column>
+		    <column heading="column_heading.value">
+			<attributeName>value</attributeName>
+		    </column>
+		    <column heading="column_heading.exception">
+			<attributeName>exception</attributeName>
+		    </column>
+		</table>
+	</view>
+</ui>
